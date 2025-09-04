@@ -1,6 +1,5 @@
 testing fro reya
 aisdhgfoidshfhjials
-guac>amaz9ng
 ## TeamCode Module
 SUSSY
 Welcome!
@@ -8,6 +7,8 @@ Welcome!
 This module, TeamCode, is the place where you will write/paste the code for your team's
 robot controller App. This module is currently empty (a clean slate) but the
 process for adding OpModes is straightforward.
+
+guac>amaz9ng
 
 ## Creating your own OpModes
 
