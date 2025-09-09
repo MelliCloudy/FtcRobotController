@@ -20,7 +20,7 @@ public class MotorTest extends LinearOpMode {
             //previousGamepad2.copy(currentGamepad2);
             //currentGamepad1.copy(gamepad1);
             //currentGamepad2.copy(gamepad2);
-            if (gamepad1.a) motor.setPower(1);
+            if (gamepad1.a) motor.setPower(gamepad1.left_stick_y);
             else motor.setPower(0);
         }
         /*
