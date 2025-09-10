@@ -31,8 +31,6 @@ public class MotorTest extends LinearOpMode {
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
             frontForward(y, LeftFront, RightFront);
             frontHorizontal(x, LeftFront, RightFront);
-            x = gamepad1.right_stick_x;
-            y = -gamepad1.right_stick_y;
             backForward(y, LeftBack, RightBack);
             backHorizontal(x, LeftBack, RightBack);
             //previousGamepad1.copy(currentGamepad1);
@@ -55,8 +53,8 @@ public class MotorTest extends LinearOpMode {
         */
     }
     public void frontForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(power);
-        right.setPower(-power);
+        left.setPower(-power);
+        right.setPower(power);
     }
     public void frontHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(-power);
@@ -67,8 +65,8 @@ public class MotorTest extends LinearOpMode {
         right.setPower(0);
     }
     public void backForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(power);
-        right.setPower(-power);
+        left.setPower(-power);
+        right.setPower(power);
     }
     public void backHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(power);
