@@ -14,11 +14,11 @@ public class MotorTest extends LinearOpMode {
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        DcMotor RightFront = hardwareMap.get(DcMotor.class, "leftBack");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        DcMotor LeftBack = hardwareMap.get(DcMotor.class, "rightFront");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
@@ -33,8 +33,8 @@ public class MotorTest extends LinearOpMode {
             frontHorizontal(x, LeftFront, LeftBack);
             x = gamepad1.right_stick_x;
             y = -gamepad1.right_stick_y;
-            frontForward(y, LeftFront, LeftBack);
-            frontHorizontal(x, LeftFront, LeftBack);
+            backForward(y, LeftFront, LeftBack);
+            backHorizontal(x, LeftFront, LeftBack);
             //previousGamepad1.copy(currentGamepad1);
             //previousGamepad2.copy(currentGamepad2);
             //currentGamepad1.copy(gamepad1);
