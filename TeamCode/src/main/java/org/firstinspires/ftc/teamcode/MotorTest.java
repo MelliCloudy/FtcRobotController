@@ -14,11 +14,11 @@ public class MotorTest extends LinearOpMode {
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        DcMotor RightFront = hardwareMap.get(DcMotor.class, "leftBack");
+        DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        DcMotor LeftBack = hardwareMap.get(DcMotor.class, "rightFront");
+        DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
