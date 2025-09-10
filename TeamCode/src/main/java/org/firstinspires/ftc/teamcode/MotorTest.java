@@ -29,12 +29,12 @@ public class MotorTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            frontForward(y, LeftFront, LeftBack);
-            frontHorizontal(x, LeftFront, LeftBack);
+            frontForward(y, LeftFront, RightFront);
+            frontHorizontal(x, LeftFront, RightFront);
             x = gamepad1.right_stick_x;
             y = -gamepad1.right_stick_y;
-            backForward(y, RightBack, LeftBack);
-            backHorizontal(x, LeftBack, LeftBack);
+            backForward(y, LeftBack, RightBack);
+            backHorizontal(x, LeftBack, RightBack);
             //previousGamepad1.copy(currentGamepad1);
             //previousGamepad2.copy(currentGamepad2);
             //currentGamepad1.copy(gamepad1);
