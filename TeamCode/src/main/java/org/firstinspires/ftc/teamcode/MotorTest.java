@@ -58,8 +58,8 @@ public class MotorTest extends LinearOpMode {
         right.setPower(1);
     }
     public void frontHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(power);
-        right.setPower(power);
+        left.setPower(-1);
+        right.setPower(-1);
     }
     public void frontReset(DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(0);
@@ -70,8 +70,8 @@ public class MotorTest extends LinearOpMode {
         right.setPower(1);
     }
     public void backHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-power);
-        right.setPower(-power);
+        left.setPower(-1);
+        right.setPower(-1);
     }
     public void backReset(DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(0);
