@@ -13,7 +13,8 @@ public class MotorTest extends LinearOpMode {
     final int FRFrontDir = -1;
     final int BLFrontDir = 1;
     final int BRFrontDir = -1;
-    public void runOpMode() throws InterruptedException{
+
+    public void runOpMode() throws InterruptedException {
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -91,3 +92,4 @@ public class MotorTest extends LinearOpMode {
         backLeft.setPower(BLFrontDir * (x - y) / Math.sqrt(2));
         frontRight.setPower(FRFrontDir * (x - y) / Math.sqrt(2));
     }
+}
