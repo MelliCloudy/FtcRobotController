@@ -90,6 +90,5 @@ public class MotorTest extends LinearOpMode {
         backLeft.setPower(BLFrontDir * (x - y) / Math.sqrt(2));
         frontRight.setPower(FRFrontDir * (x - y) / Math.sqrt(2));
     }
-
 }
 
