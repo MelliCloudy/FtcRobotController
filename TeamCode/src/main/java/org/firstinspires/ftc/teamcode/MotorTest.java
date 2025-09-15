@@ -42,7 +42,7 @@ public class MotorTest extends LinearOpMode {
             //previousGamepad2.copy(currentGamepad2);
             //currentGamepad1.copy(gamepad1);
             //currentGamepad2.copy(gamepad2);
-            
+
         }
 
         /*
@@ -91,6 +91,3 @@ public class MotorTest extends LinearOpMode {
         backLeft.setPower(BLFrontDir * (x - y) / Math.sqrt(2));
         frontRight.setPower(FRFrontDir * (x - y) / Math.sqrt(2));
     }
-
-}
-
