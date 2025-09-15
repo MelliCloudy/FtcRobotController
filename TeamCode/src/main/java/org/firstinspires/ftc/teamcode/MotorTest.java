@@ -54,8 +54,8 @@ public class MotorTest extends LinearOpMode {
     }
 
     public void frontForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-power*1.5);
-        right.setPower(power*1.5);
+        left.setPower(-power*10);
+        right.setPower(power*10);
     }
     public void frontHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(power);
