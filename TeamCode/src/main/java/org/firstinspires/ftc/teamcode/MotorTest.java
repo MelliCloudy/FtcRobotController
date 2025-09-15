@@ -61,6 +61,7 @@ public class MotorTest extends LinearOpMode {
         left.setPower(power);
         right.setPower(power);
     }
+
     public void frontReset(DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(0);
         right.setPower(0);
