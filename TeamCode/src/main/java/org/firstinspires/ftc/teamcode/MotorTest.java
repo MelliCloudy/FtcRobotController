@@ -33,7 +33,8 @@ public class MotorTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            movement(x, y, LeftFront, LeftBack, RightFront, RightBack);
+            double rot = gamepad1.right_stick_x;
+            movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
             //backForward(y, LeftBack, RightBack);
@@ -84,10 +85,12 @@ public class MotorTest extends LinearOpMode {
     }
     */
 
-    void movement(double x, double y, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
-        frontLeft.setPower(FLFrontDir * (x + y) / Math.sqrt(2));
-        backRight.setPower(BRFrontDir * (x + y) / Math.sqrt(2));
-        backLeft.setPower(BLFrontDir * (x - y) / Math.sqrt(2));
-        frontRight.setPower(FRFrontDir * (x - y) / Math.sqrt(2));
+    void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
+        final double a = 0.355;
+        final double r = 0.0475;
+        frontLeft.setPower((x - y - (rot * a))/r);
+        frontRight.setPower((x + y + (rot * a))/r);
+        backLeft.setPower((x + y - (rot * a))/r);
+        backRight.setPower((x - y + (rot * a))/r);
     }
 }
