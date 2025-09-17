@@ -9,6 +9,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp (name = "TeleOpTest", group = "test")
 
 public class MotorTest extends LinearOpMode {
+    final int FLFrontDir = 1;
+    final int FRFrontDir = -1;
+    final int BLFrontDir = 1;
+    final int BRFrontDir = -1;
     public void runOpMode() throws InterruptedException{
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -29,6 +33,7 @@ public class MotorTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
+            movement(x, y, LeftFront, LeftBack, RightFront, RightBack);
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
             //backForward(y, LeftBack, RightBack);
@@ -37,7 +42,7 @@ public class MotorTest extends LinearOpMode {
             //previousGamepad2.copy(currentGamepad2);
             //currentGamepad1.copy(gamepad1);
             //currentGamepad2.copy(gamepad2);
-            
+
         }
 
         /*
@@ -52,10 +57,10 @@ public class MotorTest extends LinearOpMode {
         motor.setPower(0);
         */
     }
-
+    /*
     public void frontForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-power);
-        right.setPower(power);
+        left.setPower(-1);
+        right.setPower(1);
     }
     public void frontHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(power);
@@ -66,8 +71,8 @@ public class MotorTest extends LinearOpMode {
         right.setPower(0);
     }
     public void backForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-power);
-        right.setPower(power);
+        left.setPower(-1);
+        right.setPower(1);
     }
     public void backHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
         left.setPower(-power);
@@ -77,10 +82,12 @@ public class MotorTest extends LinearOpMode {
         left.setPower(0);
         right.setPower(0);
     }
+    */
 
-
-    //void movement(double x, double y, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
-     //   void
-   // }
+    void movement(double x, double y, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
+        frontLeft.setPower(FLFrontDir * (x + y) / Math.sqrt(2));
+        backRight.setPower(BRFrontDir * (x + y) / Math.sqrt(2));
+        backLeft.setPower(BLFrontDir * (x - y) / Math.sqrt(2));
+        frontRight.setPower(FRFrontDir * (x - y) / Math.sqrt(2));
+    }
 }
-
