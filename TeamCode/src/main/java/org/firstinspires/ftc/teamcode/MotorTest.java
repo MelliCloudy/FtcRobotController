@@ -32,8 +32,8 @@ public class MotorTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            double rot = gamepad1.right_stick_x;
+            double x = -gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
+            double rot = gamepad1.right_stick_x * 5;
             movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
