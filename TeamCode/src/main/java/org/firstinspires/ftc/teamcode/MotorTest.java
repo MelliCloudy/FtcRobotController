@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,7 +34,10 @@ public class MotorTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             double x = -gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            double rot = gamepad1.right_stick_x * 5;
+            double rot = gamepad1.right_stick_x;
+            telemetry.addData("x", x);
+            telemetry.addData("y", y);
+            telemetry.addData("rot", rot);
             movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
@@ -88,9 +92,9 @@ public class MotorTest extends LinearOpMode {
     void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
         final double a = 0.355;
         final double r = 0.0475;
-        frontLeft.setPower((x - y - (rot * a))/r);
-        frontRight.setPower((x + y + (rot * a))/r);
-        backLeft.setPower((x + y - (rot * a))/r);
-        backRight.setPower((x - y + (rot * a))/r);
+        frontLeft.setPower(FLFrontDir * (x - y - (rot * a))/r);
+        frontRight.setPower(FRFrontDir * (x + y + (rot * a))/r);
+        backLeft.setPower(BLFrontDir * (x + y - (rot * a))/r);
+        backRight.setPower(BRFrontDir * (x - y + (rot * a))/r);
     }
 }
