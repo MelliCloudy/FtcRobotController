@@ -14,27 +14,40 @@ public class MotorTest extends LinearOpMode {
     final int FRFrontDir = -1;
     final int BLFrontDir = 1;
     final int BRFrontDir = -1;
+    final double sprintMoveMult = 1.2;
+    final double sprintTurnMult = 1.2;
+    final double brakeMoveMult = 0.7;
+    final double brakeTurnMult = 0.7;
     public void runOpMode() throws InterruptedException{
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
 
         while (opModeIsActive()) {
-            double x = -gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            double rot = gamepad1.right_stick_x;
+            double x = -gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
+            double rot = gamepad1.left_stick_x;
+            if (gamepad1.left_bumper) { // the game developer in me requires this to be done
+                rot *= sprintTurnMult;
+            } else {
+                rot *= 1 - (gamepad1.left_trigger * brakeTurnMult);
+            }
+            if (gamepad1.right_bumper) {
+                x *= sprintMoveMult;
+                y *= sprintMoveMult;
+            } else {
+                x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
+                y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
+            }
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("rot", rot);
@@ -92,9 +105,10 @@ public class MotorTest extends LinearOpMode {
     void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
         final double a = 0.355;
         final double r = 0.0475;
-        frontLeft.setPower(FLFrontDir * (x - y - (rot * a))/r);
-        frontRight.setPower(FRFrontDir * (x + y + (rot * a))/r);
-        backLeft.setPower(BLFrontDir * (x + y - (rot * a))/r);
-        backRight.setPower(BRFrontDir * (x - y + (rot * a))/r);
+        final double bandaidSolution = 1.2;
+        frontLeft.setPower(FLFrontDir * (x - y - (rot * a)) / bandaidSolution);
+        frontRight.setPower(FRFrontDir * (x + y + (rot * a)) / bandaidSolution);
+        backLeft.setPower(BLFrontDir * (x + y - (rot * a)) / bandaidSolution);
+        backRight.setPower(BRFrontDir * (x - y + (rot * a)) / bandaidSolution);
     }
 }
