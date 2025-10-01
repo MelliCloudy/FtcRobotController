@@ -44,6 +44,7 @@ public class MotorTest extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 x *= sprintMoveMult;
                 y *= sprintMoveMult;
+
             } else {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
