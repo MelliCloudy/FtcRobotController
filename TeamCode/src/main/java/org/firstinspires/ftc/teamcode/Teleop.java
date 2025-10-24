@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 //Type of Program (Auto or TeleOp)
 @TeleOp (name = "TeleOpTest", group = "test")
 
-public class MotorTest extends LinearOpMode {
+public class Teleop extends LinearOpMode {
     final int FLFrontDir = 1;
     final int FRFrontDir = -1;
     final int BLFrontDir = 1;
@@ -49,8 +49,12 @@ public class MotorTest extends LinearOpMode {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
-
-            movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+            Movement move = new Movement();
+            move.movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+            telemetry.addData("x", x);
+            telemetry.addData("y", y);
+            telemetry.addData("rot", rot);
+            telemetry.update();
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
             //backForward(y, LeftBack, RightBack);
@@ -100,22 +104,4 @@ public class MotorTest extends LinearOpMode {
         right.setPower(0);
     }
     */
-
-    void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
-        telemetry.addData("x", x);
-        telemetry.addData("y", y);
-        telemetry.addData("rot", rot);
-        telemetry.update();
-
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
-        double frontLeftPower = (y + x + rot) / denominator;
-        double backLeftPower = (y - x + rot) / denominator;
-        double frontRightPower = (y - x - rot) / denominator;
-        double backRightPower = (y + x - rot) / denominator;
-
-        frontLeft.setPower(frontLeftPower);
-        backLeft.setPower(backLeftPower);
-        frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);
-    }
 }
