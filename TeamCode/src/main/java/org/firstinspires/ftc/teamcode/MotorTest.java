@@ -34,8 +34,8 @@ public class MotorTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            double x = -gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
-            double rot = gamepad1.left_stick_x;
+            double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
+            double rot = gamepad1.left_stick_y;
             if (gamepad1.left_bumper) { // the game developer in me requires this to be done
                 rot *= sprintTurnMult;
             } else {
@@ -49,9 +49,7 @@ public class MotorTest extends LinearOpMode {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("rot", rot);
+
             movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             //frontForward(y, LeftFront, RightFront);
             //frontHorizontal(x, LeftFront, RightFront);
@@ -104,12 +102,20 @@ public class MotorTest extends LinearOpMode {
     */
 
     void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
-        final double a = 0.355;
-        final double r = 0.0475;
-        final double bandaidSolution = 1.2;
-        frontLeft.setPower(FLFrontDir * (x - y - (rot * a)) / bandaidSolution);
-        frontRight.setPower(FRFrontDir * (x + y + (rot * a)) / bandaidSolution);
-        backLeft.setPower(BLFrontDir * (x + y - (rot * a)) / bandaidSolution);
-        backRight.setPower(BRFrontDir * (x - y + (rot * a)) / bandaidSolution);
+        telemetry.addData("x", x);
+        telemetry.addData("y", y);
+        telemetry.addData("rot", rot);
+        telemetry.update();
+
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
+        double frontLeftPower = (y + x + rot) / denominator;
+        double backLeftPower = (y - x + rot) / denominator;
+        double frontRightPower = (y - x - rot) / denominator;
+        double backRightPower = (y + x - rot) / denominator;
+
+        frontLeft.setPower(frontLeftPower);
+        backLeft.setPower(backLeftPower);
+        frontRight.setPower(frontRightPower);
+        backRight.setPower(backRightPower);
     }
 }
