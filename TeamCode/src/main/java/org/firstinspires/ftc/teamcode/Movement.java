@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 //Type of Program (Auto or TeleOp)
 @TeleOp (name = "TeleOpTest", group = "test")
 
+// temp stuff so i can push
+
 public class Movement {
     public void move(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);

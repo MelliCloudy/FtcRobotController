@@ -61,53 +61,8 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("y", y);
             telemetry.addData("rot", rot);
             telemetry.update();
-            //frontForward(y, LeftFront, RightFront);
-            //frontHorizontal(x, LeftFront, RightFront);
-            //backForward(y, LeftBack, RightBack);
-            //backHorizontal(x, LeftBack, RightBack);
-            //previousGamepad1.copy(currentGamepad1);
-            //previousGamepad2.copy(currentGamepad2);
-            //currentGamepad1.copy(gamepad1);
-            //currentGamepad2.copy(gamepad2);
 
         }
 
-        /*
-        DcMotor motor = hardwareMap.get(DcMotor.class, "test");
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
-
-        while (opModeIsActive() && gamepad1.a){
-            motor.setPower(0.5);
-        }
-        motor.setPower(0);
-        */
     }
-    /*
-    public void frontForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-1);
-        right.setPower(1);
-    }
-    public void frontHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(power);
-        right.setPower(power);
-    }
-    public void frontReset(DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(0);
-        right.setPower(0);
-    }
-    public void backForward(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-1);
-        right.setPower(1);
-    }
-    public void backHorizontal(double power, DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(-power);
-        right.setPower(-power);
-    }
-    public void backReset(DcMotor left, DcMotor right) throws InterruptedException {
-        left.setPower(0);
-        right.setPower(0);
-    }
-    */
 }
