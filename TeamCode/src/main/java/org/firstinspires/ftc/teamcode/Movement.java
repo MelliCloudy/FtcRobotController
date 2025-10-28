@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 @TeleOp (name = "TeleOpTest", group = "test")
 
 public class Movement {
-    void movement(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
+    public void move(double x, double y, double rot, DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
         double frontLeftPower = (y + x + rot) / denominator;
         double backLeftPower = (y - x + rot) / denominator;

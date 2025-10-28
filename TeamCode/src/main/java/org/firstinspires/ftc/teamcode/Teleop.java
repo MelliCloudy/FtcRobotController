@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp (name = "TeleOpTest", group = "test")
 
 public class Teleop extends LinearOpMode {
+    Movement movement = new Movement();
+    Intake intake = new Intake();
     final int FLFrontDir = 1;
     final int FRFrontDir = -1;
     final int BLFrontDir = 1;
@@ -32,10 +34,14 @@ public class Teleop extends LinearOpMode {
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
+        DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the intake motor name will be");
+        LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive()) {
             double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
             double rot = gamepad1.left_stick_y;
+            boolean intakePressed = gamepad1.b;
             if (gamepad1.left_bumper) { // the game developer in me requires this to be done
                 rot *= sprintTurnMult;
             } else {
@@ -49,8 +55,8 @@ public class Teleop extends LinearOpMode {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
-            Movement move = new Movement();
-            move.movement(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+            if (intakePressed) intake.toggleIntake(IntakeMotor);
+            movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("rot", rot);
