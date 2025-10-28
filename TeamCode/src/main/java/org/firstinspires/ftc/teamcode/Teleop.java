@@ -39,10 +39,14 @@ public class Teleop extends LinearOpMode {
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeIsActive()) {
+
+            //input and whatnot
             double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
             double rot = gamepad1.left_stick_y;
             boolean intakePressed = gamepad1.b;
-            if (gamepad1.left_bumper) { // the game developer in me requires this to be done
+
+            // the game developer in me requires this to be done
+            if (gamepad1.left_bumper) {
                 rot *= sprintTurnMult;
             } else {
                 rot *= 1 - (gamepad1.left_trigger * brakeTurnMult);
@@ -55,8 +59,11 @@ public class Teleop extends LinearOpMode {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
+
+            // calling the random ahh shat i coded
             if (intakePressed) intake.toggleIntake(IntakeMotor);
             movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("rot", rot);
@@ -66,3 +73,19 @@ public class Teleop extends LinearOpMode {
 
     }
 }
+
+
+
+/*
+   /\ /\
+ =('w'  )=
+  (||  _^)__
+
+    ___
+   /   \`\
+  /     \ \
+ / .u.   \ \
+/         \ \
+(   (  )  ) /
+ \_______/-
+ */
