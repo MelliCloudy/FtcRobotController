@@ -5,19 +5,24 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Intake {
     boolean intakeOn = false;
-    public void startIntake(DcMotor intakeMotor) {
+    DcMotor intakeMotor;
+
+    public Intake(DcMotor motor) {
+        intakeMotor = motor;
+    }
+    public void startIntake() {
         intakeMotor.setPower(0.1);
         intakeOn = true;
     }
-    public void stopIntake(DcMotor intakeMotor) {
+    public void stopIntake() {
         intakeMotor.setPower(0.0);
         intakeOn = false;
     }
-    public void toggleIntake(DcMotor intakeMotor) {
+    public void toggleIntake() {
         if (intakeOn) {
-            stopIntake(intakeMotor);
+            stopIntake();
         } else {
-            startIntake(intakeMotor);
+            startIntake();
         }
     }
 }

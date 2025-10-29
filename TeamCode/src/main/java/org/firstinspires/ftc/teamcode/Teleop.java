@@ -10,8 +10,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp (name = "TeleOpTest", group = "test")
 
 public class Teleop extends LinearOpMode {
-    Movement movement = new Movement();
-    Intake intake = new Intake();
     final int FLFrontDir = 1;
     final int FRFrontDir = -1;
     final int BLFrontDir = 1;
@@ -20,6 +18,10 @@ public class Teleop extends LinearOpMode {
     final double sprintTurnMult = 1.2;
     final double brakeMoveMult = 0.7;
     final double brakeTurnMult = 0.7;
+
+    final double revolverPrecisionMult = 0.1;
+
+
     public void runOpMode() throws InterruptedException{
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -35,14 +37,23 @@ public class Teleop extends LinearOpMode {
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
         DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the intake motor name will be");
-        LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the intake motor name will be");
+        RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RevolverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        Movement movement = new Movement();
+        Intake intake = new Intake(IntakeMotor);
+        RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
 
         while (opModeIsActive()) {
 
             //input and whatnot
             double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
             double rot = gamepad1.left_stick_y;
+            double revolve = gamepad2.left_stick_x;
+            boolean revolverPrecisionMode = gamepad2.a;
             boolean intakePressed = gamepad1.b;
 
             // the game developer in me requires this to be done
@@ -54,15 +65,22 @@ public class Teleop extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 x *= sprintMoveMult;
                 y *= sprintMoveMult;
-
             } else {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
 
+            if (revolverPrecisionMode) {
+                revolve *= revolverPrecisionMult;
+            }
+
+
             // calling the random ahh shat i coded
-            if (intakePressed) intake.toggleIntake(IntakeMotor);
+            if (intakePressed) intake.toggleIntake();
             movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+            revolvingSorter.rotate(revolve);
+
+
 
             telemetry.addData("x", x);
             telemetry.addData("y", y);
@@ -86,6 +104,6 @@ public class Teleop extends LinearOpMode {
   /     \ \
  / .u.   \ \
 /         \ \
-(   (  )  ) /
+(  (  )   ) /
  \_______/-
  */
