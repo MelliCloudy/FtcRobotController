@@ -39,17 +39,22 @@ public class Teleop extends LinearOpMode {
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        waitForStart();
         DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the intake motor name will be");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the intake motor name will be");
+        DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RevolverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor ShooterMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the shooter motor name will be");
+        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        waitForStart();
 
         Movement movement = new Movement();
         Intake intake = new Intake(IntakeMotor);
         RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
+        Shooter shooter = new Shooter(ShooterMotor);
 
         while (opModeIsActive()) {
 
@@ -59,6 +64,7 @@ public class Teleop extends LinearOpMode {
             double revolve = gamepad2.left_stick_x;
             boolean revolverPrecisionMode = gamepad2.a;
             boolean intakePressed = gamepad1.b;
+            boolean shooterPressed = gamepad2.b;
 
             // the game developer in me requires this to be done
             if (gamepad1.left_bumper) {
@@ -81,8 +87,10 @@ public class Teleop extends LinearOpMode {
 
             // calling the random ahh shat i coded
             if (intakePressed) intake.toggleIntake();
+            if (shooterPressed) shooter.toggleFlywheel();
             movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             revolvingSorter.rotate(revolve);
+
 
 
 
