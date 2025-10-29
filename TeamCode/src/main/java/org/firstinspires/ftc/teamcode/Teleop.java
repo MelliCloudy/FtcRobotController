@@ -7,6 +7,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //Type of Program (Auto or TeleOp)
+
+
+
+// temp stuff so i can push I
 @TeleOp (name = "TeleOpTest", group = "test")
 
 public class Teleop extends LinearOpMode {
