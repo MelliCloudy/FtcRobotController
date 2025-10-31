@@ -61,10 +61,10 @@ public class Teleop extends LinearOpMode {
             //input and whatnot
             double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
             double rot = gamepad1.left_stick_y;
-            double revolve = gamepad2.left_stick_x;
-            boolean revolverPrecisionMode = gamepad2.a;
+            // double revolve = gamepad2.left_stick_x;
+            // boolean revolverPrecisionMode = gamepad2.a;
             boolean intakePressed = gamepad1.b;
-            boolean shooterPressed = gamepad2.b;
+            // boolean shooterPressed = gamepad2.b;
 
             // the game developer in me requires this to be done
             if (gamepad1.left_bumper) {
@@ -80,16 +80,18 @@ public class Teleop extends LinearOpMode {
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
 
+            /*
             if (revolverPrecisionMode) {
                 revolve *= revolverPrecisionMult;
             }
+            */
 
 
             // calling the random ahh shat i coded
             if (intakePressed) intake.toggleIntake();
-            if (shooterPressed) shooter.toggleFlywheel();
+            // if (shooterPressed) shooter.toggleFlywheel();
             movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
-            revolvingSorter.rotate(revolve);
+            // revolvingSorter.rotate(revolve);
 
 
 
