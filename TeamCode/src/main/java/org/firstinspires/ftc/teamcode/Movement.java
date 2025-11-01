@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-//Type of Program (Auto or TeleOp)
-@TeleOp (name = "TeleOpTest", group = "test")
 
 // temp stuff so i can push I
 
