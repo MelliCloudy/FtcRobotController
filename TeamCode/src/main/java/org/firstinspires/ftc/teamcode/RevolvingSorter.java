@@ -1,4 +1,6 @@
+/*
 package org.firstinspires.ftc.teamcode;
+
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,7 +13,7 @@ public class RevolvingSorter {
     Intake intake;
     // Shooter shooter;
 
-    public RevolvingSorter(/*Intake newIntake,  Shooter newShooter, */ DcMotor Revolver) {
+    public RevolvingSorter(/*Intake newIntake,  Shooter newShooter, DcMotor Revolver) {
         // intake = newIntake;
         // shooter = newShooter;
         RevolverMotor = Revolver;
@@ -20,7 +22,6 @@ public class RevolvingSorter {
         // RevolverMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // RevolverMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-    /*
     final int shootAngles[] = {0, 120, 240};
     final int intakeAngles[] = {180, 300, 60};
 
@@ -55,8 +56,9 @@ public class RevolvingSorter {
         }
         intake.startIntake();
     }
-    */
     public void rotate(double direction) {
         RevolverMotor.setPower(direction * 0.1);
     }
 }
+
+*/

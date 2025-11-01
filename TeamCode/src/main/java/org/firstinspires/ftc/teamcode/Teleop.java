@@ -13,10 +13,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 // temp stuff so i can push I
 
 public class Teleop extends LinearOpMode {
-    final int FLFrontDir = 1;
-    final int FRFrontDir = -1;
+    final int FLFrontDir = -1;
+    final int FRFrontDir = 1;
     final int BLFrontDir = 1;
-    final int BRFrontDir = -1;
+    final int BRFrontDir = 1;
     final double sprintMoveMult = 1.2;
     final double sprintTurnMult = 1.2;
     final double brakeMoveMult = 0.7;
@@ -51,7 +51,7 @@ public class Teleop extends LinearOpMode {
         */
         waitForStart();
 
-        Movement movement = new Movement();
+        // Movement movement = new Movement();
         Intake intake = new Intake(IntakeMotor);
         // RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
         // Shooter shooter = new Shooter(ShooterMotor);
@@ -60,7 +60,7 @@ public class Teleop extends LinearOpMode {
 
             //input and whatnot
             double x = gamepad1.right_stick_x, y = -gamepad1.right_stick_y;
-            double rot = gamepad1.left_stick_y;
+            double rot = gamepad1.left_stick_x;
             // double revolve = gamepad2.left_stick_x;
             // boolean revolverPrecisionMode = gamepad2.a;
             boolean intakePressed = gamepad1.b;
@@ -79,6 +79,27 @@ public class Teleop extends LinearOpMode {
                 x *= (1 - (gamepad1.right_trigger * brakeMoveMult));
                 y *= (1 - (gamepad1.right_trigger * brakeMoveMult));
             }
+            /*
+            if (gamepad1.a) LeftFront.setPower(1);
+            else LeftFront.setPower(0);
+            if (gamepad1.b) RightFront.setPower(1);
+            else RightFront.setPower(0);
+            if (gamepad1.x) LeftBack.setPower(1);
+            else LeftBack.setPower(0);
+            if (gamepad1.y) RightBack.setPower(1);
+            else RightBack.setPower(0);
+            */
+
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
+            double frontLeftPower = (y + x + rot) / denominator;
+            double backLeftPower = (y - x + rot) / denominator;
+            double frontRightPower = (y - x - rot) / denominator;
+            double backRightPower = (y + x - rot) / denominator;
+
+            LeftFront.setPower(FLFrontDir * frontLeftPower);
+            LeftBack.setPower(BLFrontDir * backLeftPower);
+            RightFront.setPower(FRFrontDir * frontRightPower);
+            RightBack.setPower(BRFrontDir * backRightPower);
 
             /*
             if (revolverPrecisionMode) {
@@ -90,7 +111,7 @@ public class Teleop extends LinearOpMode {
             // calling the random ahh shat i coded
             if (intakePressed) intake.toggleIntake();
             // if (shooterPressed) shooter.toggleFlywheel();
-            movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
+            // movement.move(x, y, rot, LeftFront, LeftBack, RightFront, RightBack);
             // revolvingSorter.rotate(revolve);
 
 
