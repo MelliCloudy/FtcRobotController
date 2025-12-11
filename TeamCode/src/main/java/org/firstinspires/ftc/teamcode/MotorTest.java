@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //Type of Program (Auto or TeleOp)
-@TeleOp (name = "TeleOp", group = "test")
+@TeleOp (name = "MotorTest", group = "test")
 
 
 // temp stuff so i can push I
 
-public class Teleop extends LinearOpMode {
+public class MotorTest extends LinearOpMode {
     final int FLFrontDir = -1;
     final int FRFrontDir = 1;
     final int BLFrontDir = 1;
@@ -56,37 +56,9 @@ public class Teleop extends LinearOpMode {
         // Intake intake = new Intake(IntakeMotor);
         // RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
         // Shooter shooter = new Shooter(ShooterMotor);
-        boolean intakeMode = true; // true = intake, false = push
-        boolean prevIntakeModePressed = false;
-
-        boolean intakeOn = false;
-        boolean prevIntakeTogglePressed = false;
-        boolean shooterOn = false;
-        boolean prevShooterTogglePressed = false;
 
         while (opModeIsActive()) {
 
-            //input and whatnot
-            double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            double rot = gamepad1.right_stick_x;
-            boolean intakeTogglePressed = gamepad1.a;
-            boolean shooterPressed = gamepad2.b;
-
-            // ============================= PRECISION & SPD =============================
-
-            if (gamepad1.right_bumper) {
-                rot *= sprintTurnMult;
-            } else {
-                rot *= 1 - (gamepad1.right_trigger * brakeTurnMult);
-            }
-            if (gamepad1.left_bumper) {
-                x *= sprintMoveMult;
-                y *= sprintMoveMult;
-            } else {
-                x *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-                y *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-            }
-            /*
             if (gamepad1.a) LeftFront.setPower(1);
             else LeftFront.setPower(0);
             if (gamepad1.b) RightFront.setPower(1);
@@ -95,57 +67,10 @@ public class Teleop extends LinearOpMode {
             else LeftBack.setPower(0);
             if (gamepad1.y) RightBack.setPower(1);
             else RightBack.setPower(0);
-            */
-            // ============================== MOTION ======================================
-
-
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
-            double frontLeftPower = (y + x + rot) / denominator;
-            double backLeftPower = (y - x + rot) / denominator;
-            double frontRightPower = (y - x - rot) / denominator;
-            double backRightPower = (y + x - rot) / denominator;
-
-            LeftFront.setPower(FLFrontDir * frontLeftPower);
-            LeftBack.setPower(BLFrontDir * backLeftPower);
-            RightFront.setPower(FRFrontDir * frontRightPower);
-            RightBack.setPower(BRFrontDir * backRightPower);
-
-            /*
-            if (revolverPrecisionMode) {
-                revolve *= revolverPrecisionMult;
-            }
-            */
-
-
-            // =============================== INTAKE ========================================
-
-
-            if (intakeTogglePressed && !prevIntakeTogglePressed) intakeOn = !intakeOn;
-            prevIntakeTogglePressed = intakeTogglePressed;
-            if (intakeOn) {
-                IntakeMotor.setPower(-0.5);
-            } else {
-                IntakeMotor.setPower(0);
-            }
-
-
-
-            // ================================ SHOOTER =======================================
-
-            if (shooterPressed && !prevShooterTogglePressed) shooterOn = !shooterOn;
-            prevShooterTogglePressed = shooterPressed;
-            if (shooterOn) {
-                IntakeMotor.setPower(-0.5);
-            } else {
-                IntakeMotor.setPower(0);
-            }
-
-
-
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("rot", rot);
-            telemetry.update();
+            if (gamepad1.right_bumper) IntakeMotor.setPower(1);
+            else IntakeMotor.setPower(0);
+            if (gamepad1.left_bumper) ShootMotor.setPower(1);
+            else ShootMotor.setPower(0);
 
         }
 
@@ -153,17 +78,3 @@ public class Teleop extends LinearOpMode {
 }
 
 
-
-/*
-   /\ /\
- =('w'  )=
-  (||  _^)__
-
-    ___
-   /   \`\
-  /     \ \
- / .u.   \ \
-/         \ \
-(  (  )   ) /
- \_______/-
- */

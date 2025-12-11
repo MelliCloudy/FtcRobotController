@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode;
-import java.util.*;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@Autonomous(name = "getDemFreePoints", group = "test")
+@Autonomous(name = "Auton", group = "test")
 
-public class getDemFreePoints extends LinearOpMode {
+public class Auton extends LinearOpMode {
     final int FLFrontDir = -1;
     final int FRFrontDir = 1;
     final int BLFrontDir = 1;
