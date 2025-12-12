@@ -56,8 +56,6 @@ public class Teleop extends LinearOpMode {
         // Intake intake = new Intake(IntakeMotor);
         // RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
         // Shooter shooter = new Shooter(ShooterMotor);
-        boolean intakeMode = true; // true = intake, false = push
-        boolean prevIntakeModePressed = false;
 
         boolean intakeOn = false;
         boolean prevIntakeTogglePressed = false;
@@ -70,7 +68,7 @@ public class Teleop extends LinearOpMode {
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
             double rot = gamepad1.right_stick_x;
             boolean intakeTogglePressed = gamepad1.a;
-            boolean shooterPressed = gamepad2.b;
+            boolean shooterPressed = gamepad1.b;
 
             // ============================= PRECISION & SPD =============================
 
@@ -123,7 +121,7 @@ public class Teleop extends LinearOpMode {
             if (intakeTogglePressed && !prevIntakeTogglePressed) intakeOn = !intakeOn;
             prevIntakeTogglePressed = intakeTogglePressed;
             if (intakeOn) {
-                IntakeMotor.setPower(-0.5);
+                IntakeMotor.setPower(0.5);
             } else {
                 IntakeMotor.setPower(0);
             }
@@ -135,9 +133,9 @@ public class Teleop extends LinearOpMode {
             if (shooterPressed && !prevShooterTogglePressed) shooterOn = !shooterOn;
             prevShooterTogglePressed = shooterPressed;
             if (shooterOn) {
-                IntakeMotor.setPower(-0.5);
+                ShootMotor.setPower(-1);
             } else {
-                IntakeMotor.setPower(0);
+                ShootMotor.setPower(0);
             }
 
 
