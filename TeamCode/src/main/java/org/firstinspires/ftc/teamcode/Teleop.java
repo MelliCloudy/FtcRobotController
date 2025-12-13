@@ -59,6 +59,8 @@ public class Teleop extends LinearOpMode {
 
         boolean intakeOn = false;
         boolean prevIntakeTogglePressed = false;
+        boolean outtakeOn = false;
+        boolean prevOuttakeTogglePressed = false;
         boolean shooterOn = false;
         boolean prevShooterTogglePressed = false;
 
@@ -67,8 +69,13 @@ public class Teleop extends LinearOpMode {
             //input and whatnot
             double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
             double rot = gamepad1.right_stick_x;
+            telemetry.addData("x", x);
+            telemetry.addData("y", y);
+            telemetry.addData("rot", rot);
+            telemetry.update();
             boolean intakeTogglePressed = gamepad1.a;
             boolean shooterPressed = gamepad1.b;
+            boolean outtakeTogglePressed = gamepad1.x;
 
             // ============================= PRECISION & SPD =============================
 
@@ -118,16 +125,31 @@ public class Teleop extends LinearOpMode {
             // =============================== INTAKE ========================================
 
 
-            if (intakeTogglePressed && !prevIntakeTogglePressed) intakeOn = !intakeOn;
+            if (intakeTogglePressed && !prevIntakeTogglePressed) {
+                intakeOn = !intakeOn;
+                outtakeOn = false;
+            }
             prevIntakeTogglePressed = intakeTogglePressed;
             if (intakeOn) {
                 IntakeMotor.setPower(0.5);
-            } else {
-                IntakeMotor.setPower(0);
+            }
+
+            // =============================== OUTTAKE ========================================
+
+
+            if (outtakeTogglePressed && !prevOuttakeTogglePressed) {
+                outtakeOn = !outtakeOn;
+                intakeOn = false;
+            }
+            prevOuttakeTogglePressed = outtakeTogglePressed;
+            if (outtakeOn) {
+                IntakeMotor.setPower(-0.5);
             }
 
 
-
+            if (!outtakeOn && !intakeOn) {
+                IntakeMotor.setPower(0);
+            }
             // ================================ SHOOTER =======================================
 
             if (shooterPressed && !prevShooterTogglePressed) shooterOn = !shooterOn;
@@ -138,12 +160,6 @@ public class Teleop extends LinearOpMode {
                 ShootMotor.setPower(0);
             }
 
-
-
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("rot", rot);
-            telemetry.update();
 
         }
 
