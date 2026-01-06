@@ -10,21 +10,22 @@ public class Auton extends LinearOpMode {
     final int FRFrontDir = 1;
     final int BLFrontDir = 1;
     final int BRFrontDir = 1;
-
+    // ticks per rot = 537.7, meters per rot = 0.32672563597
+    final double TPM = 1645.72332501;
 
     public void runOpMode() throws InterruptedException {
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         /*
         DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -38,11 +39,11 @@ public class Auton extends LinearOpMode {
         long startTime = System.currentTimeMillis();
 
         while (opModeIsActive()) {
-            if (System.currentTimeMillis() - startTime <= 2000) {
-                LeftFront.setPower(FLFrontDir * 0.5);
-                RightFront.setPower(FRFrontDir * 0.5);
-                LeftBack.setPower(BLFrontDir * 0.5);
-                RightBack.setPower(BRFrontDir * 0.5);
+            if (System.currentTimeMillis() - startTime <= 1000) {
+                LeftFront.setPower(FLFrontDir * 1);
+                RightFront.setPower(FRFrontDir * 1);
+                LeftBack.setPower(BLFrontDir * 1);
+                RightBack.setPower(BRFrontDir * 1);
                 telemetry.addData("timer thingy: ", System.currentTimeMillis() - startTime);
                 telemetry.update();
             }
