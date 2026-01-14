@@ -11,21 +11,28 @@ public class Auton extends LinearOpMode {
     final int BLFrontDir = 1;
     final int BRFrontDir = 1;
     // ticks per rot = 537.7, meters per rot = 0.32672563597
-    final double TPM = 1645.72332501;
+    //final double TPM = 1645.72332501;
+
 
     public void runOpMode() throws InterruptedException {
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor OdomHori = hardwareMap.get(DcMotor.class, "HorizontalOdom");
+        DcMotor OdomVert = hardwareMap.get(DcMotor.class, "VerticalOdom");
+        OdomHori.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        OdomHori.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        OdomVert.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        OdomVert.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         /*
         DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -36,24 +43,16 @@ public class Auton extends LinearOpMode {
         */
 
         waitForStart();
-        long startTime = System.currentTimeMillis();
+        final double TPCM = 0;
+        final double WheelDST_Side = 40.5;
+        final double WheelDST_Back = 33.5;
+        //final double cI = 0;
+        final double cP = 0;
+        final double cD = 0;
+        float ldst, rdst;
 
         while (opModeIsActive()) {
-            if (System.currentTimeMillis() - startTime <= 1000) {
-                LeftFront.setPower(FLFrontDir * 1);
-                RightFront.setPower(FRFrontDir * 1);
-                LeftBack.setPower(BLFrontDir * 1);
-                RightBack.setPower(BRFrontDir * 1);
-                telemetry.addData("timer thingy: ", System.currentTimeMillis() - startTime);
-                telemetry.update();
-            }
-            else {
-                telemetry.addData("timer thingy: ", "done");
-                LeftFront.setPower(0);
-                LeftBack.setPower(0);
-                RightFront.setPower(0);
-                RightBack.setPower(0);
-            }
+
         }
     }
 }
