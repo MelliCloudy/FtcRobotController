@@ -22,6 +22,7 @@ public class Teleop extends LinearOpMode {
     final double brakeMoveMult = 0.7;
     final double brakeTurnMult = 0.7;
 
+    double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException{
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
@@ -39,9 +40,12 @@ public class Teleop extends LinearOpMode {
         DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "intake");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor ShootMotor = hardwareMap.get(DcMotor.class, "shooter");
-        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor ShootMotor1 = hardwareMap.get(DcMotor.class, "shooter1");
+        ShootMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShootMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor ShootMotor2 = hardwareMap.get(DcMotor.class, "shooter2");
+        ShootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShootMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         /*
         DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -59,8 +63,6 @@ public class Teleop extends LinearOpMode {
 
         boolean intakeOn = false;
         boolean prevIntakeTogglePressed = false;
-        boolean outtakeOn = false;
-        boolean prevOuttakeTogglePressed = false;
         boolean shooterOn = false;
         boolean prevShooterTogglePressed = false;
 
@@ -72,25 +74,21 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("rot", rot);
+            telemetry.addData("flywheelPower", flywheelPower);
             telemetry.update();
             boolean intakeTogglePressed = gamepad1.a;
             boolean shooterPressed = gamepad1.b;
-            boolean outtakeTogglePressed = gamepad1.x;
+            boolean outtakeOn = gamepad1.b;
 
+            if (gamepad1.left_bumper) flywheelPower -= 0.01;
+            if (gamepad1.right_bumper) flywheelPower -= 0.01;
             // ============================= PRECISION & SPD =============================
 
-            if (gamepad1.right_bumper) {
-                rot *= sprintTurnMult;
-            } else {
-                rot *= 1 - (gamepad1.right_trigger * brakeTurnMult);
-            }
-            if (gamepad1.left_bumper) {
-                x *= sprintMoveMult;
-                y *= sprintMoveMult;
-            } else {
-                x *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-                y *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-            }
+
+            rot *= 1 - (gamepad1.right_trigger * brakeTurnMult);
+            x *= (1 - (gamepad1.left_trigger * brakeMoveMult));
+            y *= (1 - (gamepad1.left_trigger * brakeMoveMult));
+
             /*
             if (gamepad1.a) LeftFront.setPower(1);
             else LeftFront.setPower(0);
@@ -110,10 +108,11 @@ public class Teleop extends LinearOpMode {
             double frontRightPower = (y - x - rot) / denominator;
             double backRightPower = (y + x - rot) / denominator;
 
+            //*
             LeftFront.setPower(FLFrontDir * frontLeftPower);
             LeftBack.setPower(BLFrontDir * backLeftPower);
             RightFront.setPower(FRFrontDir * frontRightPower);
-            RightBack.setPower(BRFrontDir * backRightPower);
+            RightBack.setPower(BRFrontDir * backRightPower); //*/
 
             /*
             if (revolverPrecisionMode) {
@@ -127,39 +126,38 @@ public class Teleop extends LinearOpMode {
 
             if (intakeTogglePressed && !prevIntakeTogglePressed) {
                 intakeOn = !intakeOn;
-                outtakeOn = false;
             }
             prevIntakeTogglePressed = intakeTogglePressed;
-            if (intakeOn) {
-                IntakeMotor.setPower(0.5);
+            if (intakeOn && !(outtakeOn && shooterOn)) {
+                IntakeMotor.setPower(1);
+            }
+            else if (!intakeOn && !(outtakeOn && shooterOn)) {
+                IntakeMotor.setPower(0);
             }
 
             // =============================== OUTTAKE ========================================
 
 
-            if (outtakeTogglePressed && !prevOuttakeTogglePressed) {
-                outtakeOn = !outtakeOn;
-                intakeOn = false;
-            }
-            prevOuttakeTogglePressed = outtakeTogglePressed;
             if (outtakeOn) {
                 IntakeMotor.setPower(-0.5);
             }
 
-
-            if (!outtakeOn && !intakeOn) {
-                IntakeMotor.setPower(0);
-            }
             // ================================ SHOOTER =======================================
 
-            if (shooterPressed && !prevShooterTogglePressed) shooterOn = !shooterOn;
+            if (!shooterPressed && prevShooterTogglePressed) shooterOn = !shooterOn;
             prevShooterTogglePressed = shooterPressed;
             if (shooterOn) {
-                ShootMotor.setPower(-1);
+                ShootMotor1.setPower(-1);
+                ShootMotor2.setPower(1);
             } else {
-                ShootMotor.setPower(0);
+                if (intakeOn) {
+                    ShootMotor1.setPower(0.3);
+                    ShootMotor2.setPower(-0.3);
+                } else {
+                    ShootMotor1.setPower(0);
+                    ShootMotor2.setPower( 0);
+                }
             }
-
 
         }
 
