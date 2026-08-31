@@ -43,9 +43,6 @@ public class Teleop extends LinearOpMode {
         DcMotor ShootMotor1 = hardwareMap.get(DcMotor.class, "shooter1");
         ShootMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ShootMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor ShootMotor2 = hardwareMap.get(DcMotor.class, "shooter2");
-        ShootMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ShootMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         /*
         DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -148,14 +145,11 @@ public class Teleop extends LinearOpMode {
             prevShooterTogglePressed = shooterPressed;
             if (shooterOn) {
                 ShootMotor1.setPower(-1);
-                ShootMotor2.setPower(1);
             } else {
                 if (intakeOn) {
                     ShootMotor1.setPower(0.3);
-                    ShootMotor2.setPower(-0.3);
                 } else {
                     ShootMotor1.setPower(0);
-                    ShootMotor2.setPower( 0);
                 }
             }
 
