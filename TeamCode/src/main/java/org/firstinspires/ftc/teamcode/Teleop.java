@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp (name = "TeleOp", group = "test")
 
 
-// temp stuff so i can push I
+// temp stuff so i can push Iakfjleridjfopvervji;wekf
 
 public class Teleop extends LinearOpMode {
     final int FLFrontDir = -1;
