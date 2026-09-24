@@ -21,7 +21,7 @@ public class PID {
     public double update(double error) {
         double P = cP * error;
         double I = cI * (error + integralSum);
-        double D = cD * (error - prevError);2222
+        double D = cD * (error - prevError);
         prevError = error;
         integralSum += error;
         return P + I + D;

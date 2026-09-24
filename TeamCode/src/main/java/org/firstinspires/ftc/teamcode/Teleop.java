@@ -10,6 +10,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @TeleOp (name = "TeleOp", group = "test")
 
 
+// FR: 0
+// BR: 1
+// TL: 2
+// BL: 3
+
 // temp stuff so i can push Iakfjleridjfopvervji;wekf
 
 public class Teleop extends LinearOpMode {
