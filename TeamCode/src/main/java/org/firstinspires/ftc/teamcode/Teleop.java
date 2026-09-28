@@ -29,7 +29,7 @@ public class Teleop extends LinearOpMode {
 
     double flywheelPower = 1;
 
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -42,12 +42,6 @@ public class Teleop extends LinearOpMode {
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "intake");
-        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor ShootMotor1 = hardwareMap.get(DcMotor.class, "shooter1");
-        ShootMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ShootMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         /*
         DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
         RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -121,45 +115,7 @@ public class Teleop extends LinearOpMode {
                 revolve *= revolverPrecisionMult;
             }
             */
-
-
-            // =============================== INTAKE ========================================
-
-
-            if (intakeTogglePressed && !prevIntakeTogglePressed) {
-                intakeOn = !intakeOn;
-            }
-            prevIntakeTogglePressed = intakeTogglePressed;
-            if (intakeOn && !(outtakeOn && shooterOn)) {
-                IntakeMotor.setPower(1);
-            }
-            else if (!intakeOn && !(outtakeOn && shooterOn)) {
-                IntakeMotor.setPower(0);
-            }
-
-            // =============================== OUTTAKE ========================================
-
-
-            if (outtakeOn) {
-                IntakeMotor.setPower(-0.5);
-            }
-
-            // ================================ SHOOTER =======================================
-
-            if (!shooterPressed && prevShooterTogglePressed) shooterOn = !shooterOn;
-            prevShooterTogglePressed = shooterPressed;
-            if (shooterOn) {
-                ShootMotor1.setPower(-1);
-            } else {
-                if (intakeOn) {
-                    ShootMotor1.setPower(0.3);
-                } else {
-                    ShootMotor1.setPower(0);
-                }
-            }
-
         }
-
     }
 }
 
