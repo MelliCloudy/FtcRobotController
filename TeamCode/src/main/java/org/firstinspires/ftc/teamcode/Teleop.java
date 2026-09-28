@@ -5,6 +5,11 @@ import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+
 
 //Type of Program (Auto or TeleOp)
 @TeleOp (name = "TeleOp", group = "test")
@@ -30,6 +35,7 @@ public class Teleop extends LinearOpMode {
     double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException {
+        IMU imu = hardwareMap.get(IMU.class, "imu");
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -42,20 +48,8 @@ public class Teleop extends LinearOpMode {
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        /*
-        DcMotor RevolverMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the revolver motor name will be");
-        RevolverMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RevolverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor ShooterMotor = hardwareMap.get(DcMotor.class, " !!!!!  CHANGE ASAP  !!!!  whatever the shooter motor name will be");
-        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ShooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        */
-        waitForStart();
 
-        // Movement movement = new Movement();
-        // Intake intake = new Intake(IntakeMotor);
-        // RevolvingSorter revolvingSorter = new RevolvingSorter(RevolverMotor);
-        // Shooter shooter = new Shooter(ShooterMotor);
+        waitForStart();
 
         boolean intakeOn = false;
         boolean prevIntakeTogglePressed = false;
