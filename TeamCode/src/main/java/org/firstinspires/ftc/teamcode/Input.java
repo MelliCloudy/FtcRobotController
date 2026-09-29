@@ -1,16 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 public class Input {
-    private static class Binding {
-        String action;
-        String button;
-        Binding(String action, String button) {
-            this.action = action;
-            this.button = button;
-        }
+    private Gamepad gamepad1, gamepad2;
+    public Input(Gamepad g1, Gamepad g2) {
+        gamepad1 = g1;
+        gamepad2 = g2;
     }
-
-
+    public double moveX() {
+        return gamepad1.left_stick_x;
+    }
+    public double moveY() {
+        return gamepad1.left_stick_y;
+    }
+    public double rotation() {
+        return gamepad1.right_stick_x;
+    }
+    public boolean slow() {
+        return gamepad1.b;
+    }
 }

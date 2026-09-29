@@ -49,6 +49,9 @@ public class Teleop extends LinearOpMode {
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        Input input = new Input(gamepad1, gamepad2);
+        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, imu);
+
         waitForStart();
 
         boolean intakeOn = false;
@@ -58,57 +61,8 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //input and whatnot
-            double x = gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
-            double rot = gamepad1.right_stick_x;
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("rot", rot);
-            telemetry.addData("flywheelPower", flywheelPower);
-            telemetry.update();
-            boolean intakeTogglePressed = gamepad1.a;
-            boolean shooterPressed = gamepad1.b;
-            boolean outtakeOn = gamepad1.b;
+            movement.run();
 
-            if (gamepad1.left_bumper) flywheelPower -= 0.01;
-            if (gamepad1.right_bumper) flywheelPower -= 0.01;
-            // ============================= PRECISION & SPD =============================
-
-
-            rot *= 1 - (gamepad1.right_trigger * brakeTurnMult);
-            x *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-            y *= (1 - (gamepad1.left_trigger * brakeMoveMult));
-
-            /*
-            if (gamepad1.a) LeftFront.setPower(1);
-            else LeftFront.setPower(0);
-            if (gamepad1.b) RightFront.setPower(1);
-            else RightFront.setPower(0);
-            if (gamepad1.x) LeftBack.setPower(1);
-            else LeftBack.setPower(0);
-            if (gamepad1.y) RightBack.setPower(1);
-            else RightBack.setPower(0);
-            */
-            // ============================== MOTION ======================================
-
-
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
-            double frontLeftPower = (y + x + rot) / denominator;
-            double backLeftPower = (y - x + rot) / denominator;
-            double frontRightPower = (y - x - rot) / denominator;
-            double backRightPower = (y + x - rot) / denominator;
-
-            //*
-            LeftFront.setPower(FLFrontDir * frontLeftPower);
-            LeftBack.setPower(BLFrontDir * backLeftPower);
-            RightFront.setPower(FRFrontDir * frontRightPower);
-            RightBack.setPower(BRFrontDir * backRightPower); //*/
-
-            /*
-            if (revolverPrecisionMode) {
-                revolve *= revolverPrecisionMult;
-            }
-            */
         }
     }
 }
