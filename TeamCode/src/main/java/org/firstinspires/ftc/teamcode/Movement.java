@@ -1,14 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.opencv.core.Mat;
 
 public class Movement {
     final int FLFrontDir = -1;
     final int FRFrontDir = 1;
     final int BLFrontDir = 1;
     final int BRFrontDir = 1;
-    final double slowMult = 0.7;
+    final double slowMult = 0.3;
 
 
     DcMotor LeftFront, LeftBack, RightFront, RightBack;
@@ -34,7 +39,7 @@ public class Movement {
         RightFront.setPower(FRFrontDir * frontRightPower);
         RightBack.setPower(BRFrontDir * backRightPower);
     }
-    public void run() {
+    public double run() {
         double x, y, rot;
         x = input.moveX();
         y = input.moveY();
@@ -44,6 +49,13 @@ public class Movement {
             y *= slowMult;
             rot *= slowMult;
         }
-        move(x, y, rot);
+        if (input.reset()) {
+            imu.resetYaw();
+        }
+        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double rotatedx = x*Math.cos(2*Math.PI-heading) - y*Math.sin(2*Math.PI-heading);
+        double rotatedy = x*Math.sin(2*Math.PI-heading) + y*Math.cos(2*Math.PI-heading);
+        move(rotatedx, rotatedy, rot);
+        return heading;
     }
 }

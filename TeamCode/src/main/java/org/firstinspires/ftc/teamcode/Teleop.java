@@ -36,6 +36,10 @@ public class Teleop extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        RevHubOrientationOnRobot.LogoFacingDirection logodir = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection usbdir = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logodir, usbdir);
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -49,6 +53,7 @@ public class Teleop extends LinearOpMode {
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+
         Input input = new Input(gamepad1, gamepad2);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, imu);
 
@@ -60,8 +65,8 @@ public class Teleop extends LinearOpMode {
         boolean prevShooterTogglePressed = false;
 
         while (opModeIsActive()) {
-
-            movement.run();
+            telemetry.addData("head", movement.run());
+            telemetry.update();
 
         }
     }

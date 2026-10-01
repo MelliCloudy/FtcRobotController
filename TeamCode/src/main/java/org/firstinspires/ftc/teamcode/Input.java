@@ -11,12 +11,15 @@ public class Input {
         return gamepad1.left_stick_x;
     }
     public double moveY() {
-        return gamepad1.left_stick_y;
+        return -gamepad1.left_stick_y;
     }
     public double rotation() {
         return gamepad1.right_stick_x;
     }
     public boolean slow() {
         return gamepad1.b;
+    }
+    public boolean reset() {
+        return gamepad1.y;
     }
 }
