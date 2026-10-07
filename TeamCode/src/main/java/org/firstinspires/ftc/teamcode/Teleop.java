@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 //Type of Program (Auto or TeleOp)
 @TeleOp (name = "TeleOp", group = "test")
@@ -35,39 +35,38 @@ public class Teleop extends LinearOpMode {
     double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException {
-        IMU imu = hardwareMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot.LogoFacingDirection logodir = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbdir = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logodir, usbdir);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        /* DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
+        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
 
         Input input = new Input(gamepad1, gamepad2);
-        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, imu);
+        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
+        //Intake intake = new Intake(IntakeMotor, input);
 
         waitForStart();
-
-        boolean intakeOn = false;
-        boolean prevIntakeTogglePressed = false;
-        boolean shooterOn = false;
-        boolean prevShooterTogglePressed = false;
 
         while (opModeIsActive()) {
             telemetry.addData("head", movement.run());
             telemetry.update();
-
+            //intake.run();
         }
     }
 }

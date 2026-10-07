@@ -22,4 +22,7 @@ public class Input {
     public boolean reset() {
         return gamepad1.y;
     }
+    public boolean intake() {
+        return  gamepad2.a;
+    }
 }
