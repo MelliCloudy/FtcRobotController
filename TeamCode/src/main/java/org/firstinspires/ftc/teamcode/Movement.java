@@ -62,9 +62,9 @@ public class Movement {
         return heading;
     }
 
-    PID xpid = new PID(1, 0, 0.5, 1);
-    PID ypid = new PID(1, 0, 0.5, 1);;
-    PID rpid = new PID(1, 0, 0.5, 1);;
+    PID xpid = new PID(1, 0, 0.5, 0.5);
+    PID ypid = new PID(1, 0, 0.5, 0.5);;
+    PID rpid = new PID(1, 0, 0.5, 0.5);;
     public void moveTo(Pose2D desiredPos) {
         Pose2D currentPos = pinpoint.getPosition();
         double moveX = xpid.update(desiredPos.getX(DistanceUnit.INCH) - currentPos.getX(DistanceUnit.INCH));
