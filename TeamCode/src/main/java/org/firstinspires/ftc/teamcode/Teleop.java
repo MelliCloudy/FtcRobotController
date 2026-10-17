@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
@@ -62,7 +64,7 @@ public class Teleop extends LinearOpMode {
         //Intake intake = new Intake(IntakeMotor, input);
 
         waitForStart();
-
+        pinpoint.resetPosAndIMU();
         while (opModeIsActive()) {
             telemetry.addData("head", movement.run());
             telemetry.update();
@@ -71,18 +73,3 @@ public class Teleop extends LinearOpMode {
     }
 }
 
-
-
-/*
-   /\ /\
- =('w'  )=
-  (||  _^)__
-
-    ___
-   /   \`\
-  /     \ \
- / .u.   \ \
-/         \ \
-(  (  )   ) /
- \_______/-
- */
