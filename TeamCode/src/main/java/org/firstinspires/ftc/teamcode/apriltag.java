@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.vision.limelight3a.LLResult;
 import org.firstinspires.ftc.vision.limelight3a.Limelight3A;
 
-@Autonomous(name = "Simple Limelight Auto")
+@Autonomous(name = "Limelight")
 public class apriltag extends LinearOpMode {
 
     Limelight3A limelight;
@@ -16,7 +16,7 @@ public class apriltag extends LinearOpMode {
 
         limelight.pipelineSwitch(0);
 
-        telemetry.addLine("Ready!");
+        telemetry.addLine("ready");
         telemetry.update();
         waitForStart();
 
@@ -26,7 +26,7 @@ public class apriltag extends LinearOpMode {
             LLResult result = limelight.getLatestResult();
 
             if (result != null && result.isValid()) {
-                telemetry.addLine("Target found!");
+                telemetry.addLine("target found");
                 telemetry.addData("x offset (tx)", result.getTx());
                 telemetry.addData("y offset (ty)", result.getTy());
                 telemetry.addData("area (ta)", result.getTa());
