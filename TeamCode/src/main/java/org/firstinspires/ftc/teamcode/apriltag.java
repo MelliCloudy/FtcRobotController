@@ -7,7 +7,6 @@ import org.firstinspires.ftc.vision.limelight3a.Limelight3A;
 
 @Autonomous(name = "Limelight")
 public class apriltag extends LinearOpMode {
-
     Limelight3A limelight;
 
     @Override
@@ -31,7 +30,10 @@ public class apriltag extends LinearOpMode {
                 telemetry.addData("y offset (ty)", result.getTy());
                 telemetry.addData("area (ta)", result.getTa());
             } else {
-                telemetry.addLine("target i trying to find u");
+                telemetry.addLine("searching for target");
+                if (result == null || !result.isValid()) {
+                    telemetry.addLine("target not found");
+                }
             }
 
             telemetry.update();
