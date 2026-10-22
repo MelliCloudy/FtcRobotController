@@ -65,12 +65,16 @@ public class Movement {
     PID xpid = new PID(1, 0, 0.5, 0.5);
     PID ypid = new PID(1, 0, 0.5, 0.5);;
     PID rpid = new PID(1, 0, 0.5, 0.5);;
-    public void moveTo(Pose2D desiredPos) {
+    public Pose2D moveTo(Pose2D desiredPos) {
         Pose2D currentPos = pinpoint.getPosition();
-        double moveX = xpid.update(desiredPos.getX(DistanceUnit.INCH) - currentPos.getX(DistanceUnit.INCH));
-        double moveY = xpid.update(desiredPos.getY(DistanceUnit.INCH) - currentPos.getY(DistanceUnit.INCH));
-        double moveR = xpid.update(desiredPos.getHeading(AngleUnit.RADIANS) - currentPos.getHeading(AngleUnit.RADIANS));
-
+        double xerror = desiredPos.getX(DistanceUnit.CM) - currentPos.getX(DistanceUnit.CM);
+        double yerror = desiredPos.getY(DistanceUnit.CM) - currentPos.getY(DistanceUnit.CM);
+        double rerror = desiredPos.getHeading(AngleUnit.DEGREES) - currentPos.getHeading(AngleUnit.DEGREES);
+        double moveX = xpid.update(xerror);
+        double moveY = ypid.update(yerror);
+        double moveR = rpid.update(rerror);
+        Pose2D error = new Pose2D(DistanceUnit.CM, xerror, yerror, AngleUnit.DEGREES, rerror);
         move(moveX, moveY, moveR);
+        return error;
     }
 }
