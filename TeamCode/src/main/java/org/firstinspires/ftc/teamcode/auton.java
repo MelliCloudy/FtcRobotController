@@ -65,19 +65,22 @@ public class auton extends LinearOpMode {
         //Intake intake = new Intake(IntakeMotor, input);
 
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        pinpoint.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        pinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
         waitForStart();
         pinpoint.resetPosAndIMU();
-        pinpoint.setOffsets(9.5, 0.5, DistanceUnit.CM);
+        pinpoint.setOffsets(-0.5, 9.5, DistanceUnit.CM);
         pinpoint.recalibrateIMU();
 
         while (opModeIsActive()) {
-            Pose2D error = movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+            Pose2D error = pinpoint.getPosition();
+                    //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
             telemetry.addData("X error", error.getX(DistanceUnit.CM));
             telemetry.addData("Y error", error.getY(DistanceUnit.CM));
-            telemetry.addData("Y error", error.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("R error", error.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("X raw", pinpoint.getEncoderX());
+            telemetry.addData("Y raw", pinpoint.getEncoderY());
             telemetry.update();
             pinpoint.update();
             //intake.run();v
