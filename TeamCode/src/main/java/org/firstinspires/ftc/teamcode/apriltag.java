@@ -2,47 +2,43 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import java.util.*;
+import org.firstinspires.ftc.vision.limelight3a.LLResult;
+import org.firstinspires.ftc.vision.limelight3a.Limelight3A;
 
+@Autonomous(name = "Limelight")
 public class apriltag extends LinearOpMode {
+    Limelight3A limelight;
 
+    @Override
     public void runOpMode() {
-        AprilTagProcessor aprilTag = new AprilTagProcessor.Builder().build();
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "webcam 1"))
-                .addProcessor(aprilTag)
-                .build();
+        limelight.pipelineSwitch(0);
 
-        telemetry.addData("Status", "Initialized. Waiting for start...");
+        telemetry.addLine("ready");
         telemetry.update();
-
         waitForStart();
 
+        limelight.start();
+
         while (opModeIsActive()) {
-            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+            LLResult result = limelight.getLatestResult();
 
-            for (AprilTagDetection detection : currentDetections) {
-                if (detection.metadata != null) {
-                    double tagId = detection.id;
-                    double x = detection.ftcPose.x;
-                    double y = detection.ftcPose.y;
-                    double yaw = detection.ftcPose.yaw;
-
-                    telemetry.addData("Target Tag ID", tagId);
-                    telemetry.addData("Distance X (Inches)", x);
-                    telemetry.addData("Distance Y (Inches)", y);
-                    telemetry.addData("Yaw Angle", yaw);
+            if (result != null && result.isValid()) {
+                telemetry.addLine("target found");
+                telemetry.addData("x offset (tx)", result.getTx());
+                telemetry.addData("y offset (ty)", result.getTy());
+                telemetry.addData("area (ta)", result.getTa());
+            } else {
+                telemetry.addLine("searching for target");
+                if (result == null || !result.isValid()) {
+                    telemetry.addLine("target not found");
                 }
             }
+
             telemetry.update();
-            sleep(20);
         }
 
-        visionPortal.close();
+        limelight.stop();
     }
 }
