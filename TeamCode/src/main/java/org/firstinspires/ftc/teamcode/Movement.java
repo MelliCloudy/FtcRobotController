@@ -62,15 +62,21 @@ public class Movement {
         return heading;
     }
 
-    PID xpid = new PID(1, 0, 0.5, 0.5);
-    PID ypid = new PID(1, 0, 0.5, 0.5);;
-    PID rpid = new PID(1, 0, 0.5, 0.5);;
-    public void moveTo(Pose2D desiredPos) {
+    PID xpid = new PID(0.5, 0, 0.5, 1);
+    PID ypid = new PID(0.5, 0, 0.5, 1);;
+    PID rpid = new PID(0.5, 0, 0.5, 1);;
+    public Pose2D moveTo(Pose2D desiredPos) {
         Pose2D currentPos = pinpoint.getPosition();
-        double moveX = xpid.update(desiredPos.getX(DistanceUnit.INCH) - currentPos.getX(DistanceUnit.INCH));
-        double moveY = xpid.update(desiredPos.getY(DistanceUnit.INCH) - currentPos.getY(DistanceUnit.INCH));
-        double moveR = xpid.update(desiredPos.getHeading(AngleUnit.RADIANS) - currentPos.getHeading(AngleUnit.RADIANS));
-
-        move(moveX, moveY, moveR);
+        double xerror = desiredPos.getX(DistanceUnit.CM) - currentPos.getX(DistanceUnit.CM);
+        double yerror = desiredPos.getY(DistanceUnit.CM) - currentPos.getY(DistanceUnit.CM);
+        double rerror = desiredPos.getHeading(AngleUnit.DEGREES) - currentPos.getHeading(AngleUnit.DEGREES);
+        double moveX = xpid.update(xerror);
+        double moveY = ypid.update(yerror);
+        double moveR = rpid.update(rerror);
+        double heading = pinpoint.getHeading(AngleUnit.RADIANS);
+        double rotatedx = moveX*Math.cos(2*Math.PI-heading) - moveY*Math.sin(2*Math.PI-heading);
+        double rotatedy = moveX*Math.sin(2*Math.PI-heading) + moveY*Math.cos(2*Math.PI-heading);
+        move(rotatedx, rotatedy, moveR);
+        return pinpoint.getPosition();
     }
 }

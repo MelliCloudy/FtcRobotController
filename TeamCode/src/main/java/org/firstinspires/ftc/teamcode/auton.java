@@ -64,13 +64,27 @@ public class auton extends LinearOpMode {
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
         //Intake intake = new Intake(IntakeMotor, input);
 
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        pinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
         waitForStart();
         pinpoint.resetPosAndIMU();
+        pinpoint.setOffsets(-0.5, 9.5, DistanceUnit.CM);
+        pinpoint.recalibrateIMU();
+
         while (opModeIsActive()) {
-            telemetry.addData("head", movement.run());
+            Pose2D error = pinpoint.getPosition();
+                    //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+            //m,m,mjPose2D error = pinpoint.getPosition();
+            telemetry.addData("X error", error.getX(DistanceUnit.CM));
+            telemetry.addData("Y error", error.getY(DistanceUnit.CM));
+            telemetry.addData("R error", error.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("X raw", pinpoint.getEncoderX());
+            telemetry.addData("Y raw", pinpoint.getEncoderY());
             telemetry.update();
-            //intake.run();
-            movement.moveTo(new Pose2D(DistanceUnit.INCH, 0.0, 5, AngleUnit.DEGREES, 0.0));
+            pinpoint.update();
+            //intake.run();v
+
         }
     }
 }

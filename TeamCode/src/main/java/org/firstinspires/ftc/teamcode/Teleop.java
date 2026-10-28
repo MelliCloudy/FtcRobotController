@@ -65,6 +65,8 @@ public class Teleop extends LinearOpMode {
 
         waitForStart();
         pinpoint.resetPosAndIMU();
+        pinpoint.setOffsets(9.5, 0.5, DistanceUnit.CM);
+
         while (opModeIsActive()) {
             telemetry.addData("head", movement.run());
             telemetry.update();
