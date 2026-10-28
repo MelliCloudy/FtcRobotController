@@ -59,12 +59,12 @@ public class AprilTagToPoint extends LinearOpMode {
 
                     movement.moveTo(targetPose);
 
-                    telemetry.addData("Tag X", tagX);
-                    telemetry.addData("Tag Y", tagY);
-                    telemetry.addData("Tag Heading", tagHeading);
+                    telemetry.addData("tag x", tagX);
+                    telemetry.addData("tag y", tagY);
+                    telemetry.addData("tag heading", tagHeading);
                 }
             } else {
-                telemetry.addData("Status", "searching for apriltag");
+                telemetry.addData("status", "searching for apriltag");
             }
 
             telemetry.update();
