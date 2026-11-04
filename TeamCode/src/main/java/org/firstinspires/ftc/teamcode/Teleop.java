@@ -37,11 +37,11 @@ public class Teleop extends LinearOpMode {
     double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException {
-        GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
 
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -49,23 +49,30 @@ public class Teleop extends LinearOpMode {
 
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         /* DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
 
         Input input = new Input(gamepad1, gamepad2);
-        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
         //Intake intake = new Intake(IntakeMotor, input);
 
+
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+        );
+
+        imu.initialize(new IMU.Parameters(orientation));
+
+        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, imu);
+
         waitForStart();
-        pinpoint.resetPosAndIMU();
-        pinpoint.setOffsets(9.5, 0.5, DistanceUnit.CM);
 
         while (opModeIsActive()) {
             telemetry.addData("head", movement.run());

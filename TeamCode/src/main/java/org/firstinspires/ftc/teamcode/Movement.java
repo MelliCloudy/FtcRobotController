@@ -21,6 +21,7 @@ public class Movement {
     DcMotor LeftFront, LeftBack, RightFront, RightBack;
     Input input;
 
+    IMU imu;
     public Movement(DcMotor LF, DcMotor LB, DcMotor RF, DcMotor RB, Input input, GoBildaPinpointDriver pinpoint) {
         LeftFront = LF;
         LeftBack = LB;
@@ -28,6 +29,14 @@ public class Movement {
         RightBack = RB;
         this.input = input;
         this.pinpoint = pinpoint;
+    }
+    public Movement(DcMotor LF, DcMotor LB, DcMotor RF, DcMotor RB, Input input, IMU imu) {
+        LeftFront = LF;
+        LeftBack = LB;
+        RightFront = RF;
+        RightBack = RB;
+        this.input = input;
+        this.imu = imu;
     }
     private void move(double x, double y, double rot) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);

@@ -42,7 +42,7 @@ public class auton extends LinearOpMode {
 
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         DcMotor RightFront = hardwareMap.get(DcMotor.class, "rightFront");
         RightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -50,11 +50,11 @@ public class auton extends LinearOpMode {
 
         DcMotor LeftBack = hardwareMap.get(DcMotor.class, "leftBack");
         LeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LeftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LeftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         DcMotor RightBack = hardwareMap.get(DcMotor.class, "rightBack");
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         /* DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,7 +74,7 @@ public class auton extends LinearOpMode {
 
         while (opModeIsActive()) {
             Pose2D error = pinpoint.getPosition();
-                    //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+            movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
             telemetry.addData("X error", error.getX(DistanceUnit.CM));
             telemetry.addData("Y error", error.getY(DistanceUnit.CM));
@@ -83,9 +83,22 @@ public class auton extends LinearOpMode {
             telemetry.addData("Y raw", pinpoint.getEncoderY());
             telemetry.update();
             pinpoint.update();
-            //intake.run();v
+            //intake.run();
 
         }
     }
 }
+
+
+/*
+
+\^^^----------______________
+|##\   _  _  __  _ ___ \####^\__
+|##/ ((_ /< //_ )) //  /####  __/
+|#/_=_=_=_-_ _ _______/#####/
+/----^^^^^^^^^
+
+tootpass
+
+ */
 
