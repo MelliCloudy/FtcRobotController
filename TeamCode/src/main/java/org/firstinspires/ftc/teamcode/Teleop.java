@@ -37,7 +37,8 @@ public class Teleop extends LinearOpMode {
     double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException {
-        IMU imu = hardwareMap.get(IMU.class, "imu");
+
+        GoBildaPinpointDriver OGpinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,20 +64,24 @@ public class Teleop extends LinearOpMode {
         //Intake intake = new Intake(IntakeMotor, input);
 
 
-        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT
-        );
-
-        imu.initialize(new IMU.Parameters(orientation));
-
-        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, imu);
-
+        OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
+        OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
         waitForStart();
+        OGpinpoint.resetPosAndIMU();
+        OGpinpoint.setOffsets(0, 0, DistanceUnit.CM);
+        OGpinpoint.recalibrateIMU();
+
+        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint);
+        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
 
         while (opModeIsActive()) {
-            telemetry.addData("head", movement.run());
-            telemetry.update();
+            movement.run();
+            Pose2D pos = pinpoint.getPosition();
+            telemetry.addData("X", pos.getX(DistanceUnit.CM));
+            telemetry.addData("Y", pos.getY(DistanceUnit.CM));
+            telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
+
             //intake.run();
         }
     }

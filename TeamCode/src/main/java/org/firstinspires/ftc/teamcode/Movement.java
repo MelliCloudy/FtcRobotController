@@ -17,26 +17,17 @@ public class Movement {
     final int BRFrontDir = 1;
     final double slowMult = 0.2;
     double basedir = 0;
-    GoBildaPinpointDriver pinpoint;
+    pinpointlarp pinpoint;
     DcMotor LeftFront, LeftBack, RightFront, RightBack;
     Input input;
 
-    IMU imu;
-    public Movement(DcMotor LF, DcMotor LB, DcMotor RF, DcMotor RB, Input input, GoBildaPinpointDriver pinpoint) {
+    public Movement(DcMotor LF, DcMotor LB, DcMotor RF, DcMotor RB, Input input, pinpointlarp pinpoint) {
         LeftFront = LF;
         LeftBack = LB;
         RightFront = RF;
         RightBack = RB;
         this.input = input;
         this.pinpoint = pinpoint;
-    }
-    public Movement(DcMotor LF, DcMotor LB, DcMotor RF, DcMotor RB, Input input, IMU imu) {
-        LeftFront = LF;
-        LeftBack = LB;
-        RightFront = RF;
-        RightBack = RB;
-        this.input = input;
-        this.imu = imu;
     }
     private void move(double x, double y, double rot) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rot), 1);
@@ -76,8 +67,8 @@ public class Movement {
     PID rpid = new PID(0.5, 0, 0.5, 1);;
     public Pose2D moveTo(Pose2D desiredPos) {
         Pose2D currentPos = pinpoint.getPosition();
-        double xerror = desiredPos.getX(DistanceUnit.CM) - currentPos.getX(DistanceUnit.CM);
-        double yerror = desiredPos.getY(DistanceUnit.CM) - currentPos.getY(DistanceUnit.CM);
+        double xerror = desiredPos.getX(DistanceUnit.METER) - currentPos.getX(DistanceUnit.METER);
+        double yerror = desiredPos.getY(DistanceUnit.METER) - currentPos.getY(DistanceUnit.METER);
         double rerror = desiredPos.getHeading(AngleUnit.DEGREES) - currentPos.getHeading(AngleUnit.DEGREES);
         double moveX = xpid.update(xerror);
         double moveY = ypid.update(yerror);

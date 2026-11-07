@@ -38,7 +38,7 @@ public class auton extends LinearOpMode {
     double flywheelPower = 1;
 
     public void runOpMode() throws InterruptedException {
-        GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        GoBildaPinpointDriver OGpinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -61,28 +61,31 @@ public class auton extends LinearOpMode {
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
 
         Input input = new Input(gamepad1, gamepad2);
-        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
         //Intake intake = new Intake(IntakeMotor, input);
 
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
-        pinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
+        OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
+        OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
+
+        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint);
+        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
+
+        pinpoint.resetPositionandIMU();
+
         waitForStart();
-        pinpoint.resetPosAndIMU();
-        pinpoint.setOffsets(-0.5, 9.5, DistanceUnit.CM);
-        pinpoint.recalibrateIMU();
 
         while (opModeIsActive()) {
+            OGpinpoint.update();
+            pinpoint.update();
             Pose2D error = pinpoint.getPosition();
-            movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+            //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
             telemetry.addData("X error", error.getX(DistanceUnit.CM));
             telemetry.addData("Y error", error.getY(DistanceUnit.CM));
             telemetry.addData("R error", error.getHeading(AngleUnit.DEGREES));
-            telemetry.addData("X raw", pinpoint.getEncoderX());
-            telemetry.addData("Y raw", pinpoint.getEncoderY());
+            telemetry.addData("X raw", OGpinpoint.getEncoderX());
+            telemetry.addData("Y raw", OGpinpoint.getEncoderY());
             telemetry.update();
-            pinpoint.update();
             //intake.run();
 
         }
