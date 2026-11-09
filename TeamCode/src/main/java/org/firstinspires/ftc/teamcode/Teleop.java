@@ -61,7 +61,7 @@ public class Teleop extends LinearOpMode {
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
 
-        CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
+        CRServo servo = hardwareMap.get(CRServo.class, "servo");
         Input input = new Input(gamepad1, gamepad2);
         //Intake intake = new Intake(IntakeMotor, input);
 
@@ -80,9 +80,9 @@ public class Teleop extends LinearOpMode {
         while (opModeIsActive()) {
             movement.run();
             if (input.intake()) {
-                axonServo.setPower(1.0);
+                servo.setPower(1.0);
             } else {
-                axonServo.setPower(0.0);
+                servo.setPower(0.0);
             }
             Pose2D pos = pinpoint.getPosition();
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
