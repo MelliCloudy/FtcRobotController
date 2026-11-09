@@ -3,6 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Blinker;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -60,6 +61,7 @@ public class Teleop extends LinearOpMode {
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
 
+        CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
         Input input = new Input(gamepad1, gamepad2);
         //Intake intake = new Intake(IntakeMotor, input);
 
@@ -77,11 +79,16 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
             movement.run();
+            if (input.intake()) {
+                axonServo.setPower(1.0);
+            } else {
+                axonServo.setPower(0.0);
+            }
             Pose2D pos = pinpoint.getPosition();
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
             telemetry.addData("Y", pos.getY(DistanceUnit.CM));
             telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
-
+            telemetry.update();
             //intake.run();
         }
     }
