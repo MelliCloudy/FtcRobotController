@@ -57,13 +57,13 @@ public class Teleop extends LinearOpMode {
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        /* DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
+        DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
+        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
         Input input = new Input(gamepad1, gamepad2);
-        //Intake intake = new Intake(IntakeMotor, input);
+        Intake intake = new Intake(IntakeMotor, input);
 
 
         OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
@@ -89,7 +89,7 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("Y", pos.getY(DistanceUnit.CM));
             telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
             telemetry.update();
-            //intake.run();
+            intake.run();
         }
     }
 }
