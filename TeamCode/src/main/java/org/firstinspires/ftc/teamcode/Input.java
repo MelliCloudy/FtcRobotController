@@ -23,6 +23,6 @@ public class Input {
         return gamepad1.y;
     }
     public boolean intake() {
-        return  gamepad2.a;
+        return  gamepad1.a;
     }
 }
