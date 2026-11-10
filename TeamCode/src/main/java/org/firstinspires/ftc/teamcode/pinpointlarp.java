@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
@@ -9,20 +12,28 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 public class pinpointlarp {
     GoBildaPinpointDriver realpinpoint;
     final double yTPMM = 19.894; // positive means when pod increases, robor moving LEFT
-    final double xTPMM = 13.263; // positive means when pod increases, robor moving FORWARD
-    // swingarm is 13.263, 4 bar is 19.894
-    final double xOFF = -205; // positive offset means to the LEFT of the robor
+    final double xTPMM = 75.507; // positive means when pod increases, robor moving FORWARD
+    // custom is 75.507, 4 bar is 19.894
+    final double xOFF = -195; // positive offset means to the LEFT of the robor
     final double yOFF = 0; // positive offset means in FRONT of the robor
     private Pose2D position;
     private double prevhead;
     private double xprev;
     private double yprev;
-    public pinpointlarp(GoBildaPinpointDriver realpinpoint) {
+    Telemetry telemetry;
+    public pinpointlarp(GoBildaPinpointDriver realpinpoint, Telemetry telemetry) {
         this.realpinpoint = realpinpoint;
+        this.telemetry = telemetry;
+        this.position = new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0);
+        realpinpoint.resetPosAndIMU();
+        try { Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         prevhead = realpinpoint.getHeading(AngleUnit.DEGREES);
         xprev = realpinpoint.getEncoderX() / xTPMM;
         yprev = realpinpoint.getEncoderY() / yTPMM;
-        position = new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0);
+        telemetry.addLine("reset");
     }
 
 
@@ -78,6 +89,14 @@ public class pinpointlarp {
     void resetPositionandIMU() {
         this.position = new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0);
         realpinpoint.recalibrateIMU();
+        try { Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        prevhead = realpinpoint.getHeading(AngleUnit.DEGREES);
+        xprev = realpinpoint.getEncoderX() / xTPMM;
+        yprev = realpinpoint.getEncoderY() / yTPMM;
+        telemetry.addLine("reset");
     }
     double getHeading(AngleUnit unit) {
         return realpinpoint.getHeading(unit);

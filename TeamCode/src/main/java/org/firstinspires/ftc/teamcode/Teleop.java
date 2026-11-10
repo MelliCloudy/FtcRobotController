@@ -69,13 +69,13 @@ public class Teleop extends LinearOpMode {
         OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
         OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
-        waitForStart();
-        OGpinpoint.resetPosAndIMU();
-        OGpinpoint.setOffsets(0, 0, DistanceUnit.CM);
-        OGpinpoint.recalibrateIMU();
 
-        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint);
+
+        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
+
+        waitForStart();
+
 
         while (opModeIsActive()) {
             movement.run();
