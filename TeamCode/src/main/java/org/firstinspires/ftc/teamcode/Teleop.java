@@ -88,8 +88,8 @@ public class Teleop extends LinearOpMode {
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
             telemetry.addData("Y", pos.getY(DistanceUnit.CM));
             telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
-            telemetry.update();
             intake.run();
+            telemetry.update();
         }
     }
 }
