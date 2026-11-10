@@ -65,12 +65,12 @@ public class auton extends LinearOpMode {
 
         OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
         OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
 
-        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint);
+
+        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
 
-        pinpoint.resetPositionandIMU();
+        //pinpoint.resetPositionandIMU();
 
         waitForStart();
 
@@ -78,6 +78,7 @@ public class auton extends LinearOpMode {
             OGpinpoint.update();
             pinpoint.update();
             Pose2D error = pinpoint.getPosition();
+            //pinpoint.resetPositionandIMU();
             //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
             telemetry.addData("X error", error.getX(DistanceUnit.CM));
