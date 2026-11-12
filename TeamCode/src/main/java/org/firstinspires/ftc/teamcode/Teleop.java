@@ -70,19 +70,19 @@ public class Teleop extends LinearOpMode {
         Intake intake = new Intake(IntakeMotor, input);
 
 
-        OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
-        OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
+ //       OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
+   //     OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+     //   OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
 
 
-        pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
-        Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
+   //     pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
+     //   Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
 
         waitForStart();
 
 
         while (opModeIsActive()) {
-            movement.run();
+          //  movement.run();
             if (input.intake()) {
                 axonServo.setPower(1.0);
             } else {
@@ -92,10 +92,10 @@ public class Teleop extends LinearOpMode {
             double shooterPower = input.shooterPower();
             flywheel.setPower(shooterPower);
 
-            Pose2D pos = pinpoint.getPosition();
-            telemetry.addData("X", pos.getX(DistanceUnit.CM));
-            telemetry.addData("Y", pos.getY(DistanceUnit.CM));
-            telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
+         //   Pose2D pos = pinpoint.getPosition();
+       //     telemetry.addData("X", pos.getX(DistanceUnit.CM));
+         //   telemetry.addData("Y", pos.getY(DistanceUnit.CM));
+           // telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("shooter power", shooterPower);
             telemetry.update();
         }
