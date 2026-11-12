@@ -61,6 +61,10 @@ public class Teleop extends LinearOpMode {
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        DcMotor flywheel = hardwareMap.get(DcMotor.class, "flywheel");
+        flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        flywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
         Input input = new Input(gamepad1, gamepad2);
         Intake intake = new Intake(IntakeMotor, input);
@@ -84,11 +88,15 @@ public class Teleop extends LinearOpMode {
             } else {
                 axonServo.setPower(0.0);
             }
+            intake.run();
+            double shooterPower = input.shooterPower();
+            flywheel.setPower(shooterPower);
+
             Pose2D pos = pinpoint.getPosition();
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
             telemetry.addData("Y", pos.getY(DistanceUnit.CM));
             telemetry.addData("R", pos.getHeading(AngleUnit.DEGREES));
-            intake.run();
+            telemetry.addData("shooter power", shooterPower);
             telemetry.update();
         }
     }

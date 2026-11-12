@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
@@ -38,7 +39,7 @@ public class AprilTagToPoint extends LinearOpMode {
         limelight.pipelineSwitch(0);
         limelight.start();
 
-        telemetry.addData("Status", "initialized");
+        telemetry.addData("status", "initialized");
         telemetry.update();
 
         waitForStart();
@@ -56,7 +57,7 @@ public class AprilTagToPoint extends LinearOpMode {
                     double tagHeading = botPose3D.getOrientation().getYaw(AngleUnit.DEGREES);
 
                     Pose2D targetPose = new Pose2D(DistanceUnit.INCH, tagX, tagY, AngleUnit.DEGREES, tagHeading);
-
+                    
                     movement.moveTo(targetPose);
 
                     telemetry.addData("tag x", tagX);
@@ -73,3 +74,5 @@ public class AprilTagToPoint extends LinearOpMode {
         limelight.stop();
     }
 }
+
+ */

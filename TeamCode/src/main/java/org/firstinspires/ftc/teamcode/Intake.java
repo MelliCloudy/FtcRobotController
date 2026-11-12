@@ -16,6 +16,8 @@ public class Intake {
     public void run() {
         if (input.intake()) {
             intakeMotor.setPower(intakePower);
+        } else {
+            intakeMotor.setPower(0.0);
         }
     }
 }
