@@ -75,7 +75,6 @@ public class Teleop extends LinearOpMode {
         OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
 
-
         pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
 
@@ -90,7 +89,7 @@ public class Teleop extends LinearOpMode {
             }
             intake.run();
             double shooterPower = input.shooterPower();
-            flywheel.setPower(shooterPower);
+            flywheel.setPower(shooterPower); // 1.0
 
             Pose2D pos = pinpoint.getPosition();
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
