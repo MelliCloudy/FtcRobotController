@@ -83,7 +83,7 @@ public class Teleop extends LinearOpMode {
         while (opModeIsActive()) {
             movement.run();
             if (input.intake()) {
-                axonServo.setPower(1.0);
+                axonServo.setPower(-1.0);
             } else {
                 axonServo.setPower(0.0);
             }
