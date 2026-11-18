@@ -58,7 +58,7 @@ public class Teleop extends LinearOpMode {
         RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorPort");
-        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); // BRAKE
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         DcMotor flywheel = hardwareMap.get(DcMotor.class, "flywheel");
