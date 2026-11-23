@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 //Type of Program (Auto or TeleOp)
 @Autonomous(name = "auton", group = "auton")
@@ -56,16 +57,17 @@ public class auton extends LinearOpMode {
         RightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        /* DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "Intake");
+        DcMotor IntakeMotor = hardwareMap.get(DcMotor.class, "intakeMotorPort");
         IntakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); */
+        IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
 
         Input input = new Input(gamepad1, gamepad2);
-        //Intake intake = new Intake(IntakeMotor, input);
+        Intake intake = new Intake(IntakeMotor, input);
 
         OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
         OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-
 
         pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
@@ -76,6 +78,14 @@ public class auton extends LinearOpMode {
 
         while (opModeIsActive()) {
             pinpoint.update();
+
+            if (input.intake()) {
+                axonServo.setPower(1.0);
+            } else {
+                axonServo.setPower(0.0);
+            }
+            intake.run();
+
             Pose2D error = pinpoint.getPosition();
             //pinpoint.resetPositionandIMU();
             movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
