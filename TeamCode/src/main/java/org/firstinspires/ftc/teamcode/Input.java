@@ -23,7 +23,10 @@ public class Input {
         return gamepad1.y;
     }
     public boolean intake() {
-        return  gamepad2.a;
+        return gamepad2.a;
+    }
+    public double shooterPower() {
+        return -gamepad2.right_stick_y;
     }
     public double faceforward() {
         return gamepad1.right_stick_y;
