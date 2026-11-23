@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Intake {
@@ -7,15 +8,17 @@ public class Intake {
     DcMotor intakeMotor;
     Input input;
 
+    CRServo intakeservo;
 
-
-    public Intake(DcMotor intakeMotor, Input input) {
-        this.intakeMotor = intakeMotor;
+    public Intake(CRServo intakeservo, Input input) {
+        this.intakeservo = intakeservo;
         this.input = input;
     }
     public void run() {
         if (input.intake()) {
-            intakeMotor.setPower(intakePower);
+            intakeservo.setPower(1.0);
+        } else {
+            intakeservo.setPower(0.0);
         }
     }
 }

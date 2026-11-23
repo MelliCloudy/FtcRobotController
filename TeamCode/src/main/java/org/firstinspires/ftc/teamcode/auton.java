@@ -75,11 +75,10 @@ public class auton extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            OGpinpoint.update();
             pinpoint.update();
             Pose2D error = pinpoint.getPosition();
             //pinpoint.resetPositionandIMU();
-            //movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+            movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
             telemetry.addData("X error", error.getX(DistanceUnit.CM));
             telemetry.addData("Y error", error.getY(DistanceUnit.CM));

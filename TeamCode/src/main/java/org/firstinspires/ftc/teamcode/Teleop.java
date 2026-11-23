@@ -63,12 +63,11 @@ public class Teleop extends LinearOpMode {
 
         CRServo axonServo = hardwareMap.get(CRServo.class, "axonServo");
         Input input = new Input(gamepad1, gamepad2);
-        //Intake intake = new Intake(IntakeMotor, input);
+        Intake intake = new Intake(axonServo, input);
 
 
         OGpinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD); // fuck u this single line caused me so much pain
         OGpinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        OGpinpoint.setPosition(new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.RADIANS, 0));
 
 
         pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
@@ -79,11 +78,8 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
             movement.run();
-            if (input.intake()) {
-                axonServo.setPower(1.0);
-            } else {
-                axonServo.setPower(0.0);
-            }
+            pinpoint.update();
+            intake.run();
             Pose2D pos = pinpoint.getPosition();
             telemetry.addData("X", pos.getX(DistanceUnit.CM));
             telemetry.addData("Y", pos.getY(DistanceUnit.CM));
@@ -93,4 +89,3 @@ public class Teleop extends LinearOpMode {
         }
     }
 }
-

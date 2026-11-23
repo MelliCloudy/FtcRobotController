@@ -24,15 +24,21 @@ public class pinpointlarp {
     public pinpointlarp(GoBildaPinpointDriver realpinpoint, Telemetry telemetry) {
         this.realpinpoint = realpinpoint;
         this.telemetry = telemetry;
-        this.position = new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0);
         realpinpoint.resetPosAndIMU();
         try { Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        this.position = new Pose2D(DistanceUnit.CM, 0, 0, AngleUnit.DEGREES, 0);
+
+        realpinpoint.update();
+
         prevhead = realpinpoint.getHeading(AngleUnit.DEGREES);
         xprev = realpinpoint.getEncoderX() / xTPMM;
         yprev = realpinpoint.getEncoderY() / yTPMM;
+        telemetry.addData("xprev", xprev);
+        telemetry.addData("yprev", yprev);
+        telemetry.addData("prevhead", prevhead);
         telemetry.addLine("reset");
     }
 
@@ -49,10 +55,12 @@ public class pinpointlarp {
     }
 
     void update() {
+        realpinpoint.update();
         double head = realpinpoint.getHeading(AngleUnit.DEGREES);
         double xpod = realpinpoint.getEncoderX() / xTPMM;
         double ypod = realpinpoint.getEncoderY() / yTPMM;
         double rupd = 360;
+
         if (Math.abs(head - prevhead) < Math.abs(rupd)) {
             rupd = head - prevhead;
         }
@@ -64,6 +72,10 @@ public class pinpointlarp {
         }
         double xupd = xpod - xprev;
         double yupd = ypod - yprev;
+
+        telemetry.addData("xupd", xupd);
+        telemetry.addData("yupd", yupd);
+        telemetry.addData("rupd", rupd);
 
         Vector2 xodom = arcodom(xupd, xOFF, -rupd);
         Vector2 yodom = arcodom(yupd, yOFF, -rupd);

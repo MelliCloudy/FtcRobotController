@@ -25,4 +25,7 @@ public class Input {
     public boolean intake() {
         return  gamepad2.a;
     }
+    public double faceforward() {
+        return gamepad1.right_stick_y;
+    }
 }

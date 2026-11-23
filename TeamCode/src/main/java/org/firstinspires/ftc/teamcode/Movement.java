@@ -46,6 +46,7 @@ public class Movement {
         x = input.moveX();
         y = input.moveY();
         rot = input.rotation();
+        rot += ForwardRot(input.faceforward(), new Vector2(x, y));
         if (input.slow()) {
             x *= slowMult;
             y *= slowMult;
@@ -78,5 +79,9 @@ public class Movement {
         double rotatedy = moveX*Math.sin(2*Math.PI-heading) + moveY*Math.cos(2*Math.PI-heading);
         move(rotatedx, rotatedy, moveR);
         return pinpoint.getPosition();
+    }
+    public double ForwardRot(double strength, Vector2 movement) {
+        double error = movement.angle()*180/Math.PI - pinpoint.getHeading(AngleUnit.DEGREES);
+        return rpid.update(error) * strength;
     }
 }
