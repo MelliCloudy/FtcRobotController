@@ -1,27 +1,27 @@
-/*
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
-import org.firstinspires.ftc.vision.limelight3a.LLResult;
-import org.firstinspires.ftc.vision.limelight3a.Limelight3A;
 
 @Autonomous(name = "apriltagToPoint", group = "auton")
-public class AprilTagToPoint extends LinearOpMode {
+public class apriltag extends LinearOpMode {
     Limelight3A limelight;
-    GoBildaPinpointDriver pinpoint;
+    GoBildaPinpointDriver pinpt;
+    pinpointlarp pinpoint;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpt = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
         DcMotor leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         DcMotor rightFront = hardwareMap.get(DcMotor.class, "rightFront");
@@ -33,6 +33,10 @@ public class AprilTagToPoint extends LinearOpMode {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        pinpt.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpt.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
+        pinpoint = new pinpointlarp(pinpt, telemetry);
         Input input = new Input(gamepad1, gamepad2);
         Movement movement = new Movement(leftFront, leftBack, rightFront, rightBack, input, pinpoint);
 
@@ -43,26 +47,31 @@ public class AprilTagToPoint extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        pinpoint.resetPosAndIMU();
 
         while (opModeIsActive()) {
+            pinpt.update();
+            pinpoint.update();
             LLResult result = limelight.getLatestResult();
 
             if (result != null && result.isValid()) {
                 Pose3D botPose3D = result.getBotpose();
 
                 if (botPose3D != null) {
-                    double tagX = botPose3D.getPosition().x * 39.3701;
-                    double tagY = botPose3D.getPosition().y * 39.3701;
-                    double tagHeading = botPose3D.getOrientation().getYaw(AngleUnit.DEGREES);
+                    double tagX = botPose3D.getPosition().x;
+                    double tagY = botPose3D.getPosition().y;
+                    double tagHead = botPose3D.getOrientation().getYaw(AngleUnit.DEGREES);
 
-                    Pose2D targetPose = new Pose2D(DistanceUnit.INCH, tagX, tagY, AngleUnit.DEGREES, tagHeading);
-                    
+                    double targetX = tagX - 0.5;
+                    double targetY = tagY;
+                    double targetHead = tagHead;
+
+                    Pose2D targetPose = new Pose2D(DistanceUnit.METER, targetX, targetY, AngleUnit.DEGREES, targetHead);
+
                     movement.moveTo(targetPose);
 
                     telemetry.addData("tag x", tagX);
                     telemetry.addData("tag y", tagY);
-                    telemetry.addData("tag heading", tagHeading);
+                    telemetry.addData("tag heading", tagHead);
                 }
             } else {
                 telemetry.addData("status", "searching for apriltag");
@@ -74,5 +83,3 @@ public class AprilTagToPoint extends LinearOpMode {
         limelight.stop();
     }
 }
-
- */
