@@ -14,6 +14,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 //Type of Program (Auto or TeleOp)
 @Autonomous(name = "auton", group = "auton")
@@ -40,6 +43,7 @@ public class auton extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         GoBildaPinpointDriver OGpinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        Limelight3A limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
         DcMotor LeftFront = hardwareMap.get(DcMotor.class, "leftFront");
         LeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -72,29 +76,58 @@ public class auton extends LinearOpMode {
         pinpointlarp pinpoint = new pinpointlarp(OGpinpoint, telemetry);
         Movement movement = new Movement(LeftFront, LeftBack, RightFront, RightBack, input, pinpoint);
 
+        limelight.pipelineSwitch(0);
+        limelight.start();
+
         //pinpoint.resetPositionandIMU();
 
         waitForStart();
 
         while (opModeIsActive()) {
+            OGpinpoint.update();
             pinpoint.update();
 
-            if (input.intake()) {
-                axonServo.setPower(1.0);
-            } else {
-                axonServo.setPower(0.0);
-            }
-            intake.run();
+            Pose2D currentPos = pinpoint.getPosition();
+            LLResult result = limelight.getLatestResult();
 
-            Pose2D error = pinpoint.getPosition();
+            if (result != null && result.isValid() && result.getBotpose() != null) {
+                Pose3D botPose3D = result.getBotpose();
+                double targetX = botPose3D.getPosition().x - 0.5;
+                double targetY = botPose3D.getPosition().y;
+                double targetHead = botPose3D.getOrientation().getYaw(AngleUnit.DEGREES);
+
+                Pose2D targetPose = new Pose2D(DistanceUnit.METER, targetX, targetY, AngleUnit.DEGREES, targetHead);
+
+                movement.moveTo(targetPose);
+                double xError = targetX - currentPos.getX(DistanceUnit.METER);
+                double yError = targetY - currentPos.getY(DistanceUnit.METER);
+                double distanceError = Math.sqrt(xError * xError + yError * yError);
+
+                if (distanceError <= 0.05) {
+                    IntakeMotor.setPower(-1.0);
+                    axonServo.setPower(1.0);
+                    telemetry.addData("status", "arrived at tag - running intake");
+                } else {
+                    IntakeMotor.setPower(0.0);
+                    axonServo.setPower(0.0);
+                    telemetry.addData("status", "driving to tag");
+                }
+                telemetry.addData("distance error", distanceError);
+            } else {
+                IntakeMotor.setPower(0.0);
+                axonServo.setPower(0.0);
+                telemetry.addData("status", "searching for apriltag");
+            }
+
+           // Pose2D error = pinpoint.getPosition();
             //pinpoint.resetPositionandIMU();
-            movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
+          //  movement.moveTo(new Pose2D(DistanceUnit.CM, 0.0, 10, AngleUnit.DEGREES, 0.0));
             //m,m,mjPose2D error = pinpoint.getPosition();
-            telemetry.addData("X error", error.getX(DistanceUnit.CM));
-            telemetry.addData("Y error", error.getY(DistanceUnit.CM));
-            telemetry.addData("R error", error.getHeading(AngleUnit.DEGREES));
-            telemetry.addData("X raw", OGpinpoint.getEncoderX());
-            telemetry.addData("Y raw", OGpinpoint.getEncoderY());
+            telemetry.addData("X error", currentPos.getX(DistanceUnit.CM));
+            telemetry.addData("Y error", currentPos.getY(DistanceUnit.CM));
+            telemetry.addData("R error", currentPos.getHeading(AngleUnit.DEGREES));
+         //   telemetry.addData("X raw", OGpinpoint.getEncoderX());
+           // telemetry.addData("Y raw", OGpinpoint.getEncoderY());
             telemetry.update();
             //intake.run();
 
